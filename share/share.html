@@ -1,0 +1,30 @@
+<html>
+  <head>
+    <title>Share Page</title>
+    <script src="share.js" type="text/javascript"></script>
+    <script type="text/javascript" src="qrcode.js"></script>
+    <script type="text/javascript" src="tailwind.css.js"></script>
+  </head>
+  <body class="bg-white dark:bg-gray-800 text-center">
+    <h1 class="text-6xl text-black dark:text-white pt-10">QR Share</h1>
+    <h1 class="text-4xl text-black dark:text-white pt-10">
+      Make a QR code for your friends to have the same upgrades
+    </h1>
+    <h1 class="text-3xl text-black dark:text-white pt-10">
+      Select a leveling preset to share then click Make QR
+    </h1>
+    <div
+      id="dropdown"
+      class="dark:bg-white bg-gray-800 h-fit w-fit rounded-lg p-5 m-auto mt-5"
+    ></div>
+    <div class="mt-[100px]">
+      <a id="QRcode"></a>
+    </div>
+    <button
+      id="make"
+      class="mt-[100px] m-auto bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+    >
+      Make QR
+    </button>
+  </body>
+</html>
