@@ -31,9 +31,9 @@
     }
   ],
   "action": {
-    "default_title": "Defly.IO"
+    "default_title": "Defly Power Up+"
   },
-  "permissions": [],
+  "permissions": ["storage"],
   "background": {
     "service_worker": "background.js"
   }

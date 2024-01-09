@@ -1,4 +1,25 @@
-let isPrem = false;
+let stat = '';
+async function icon() {
+  if ((await chrome.storage.local.get(["disabled"]))["disabled"]) {
+    chrome.action.setIcon({ path: "images/disabled_icon.png" });
+    return;
+  }
+  if ((await chrome.storage.local.get(["icon"]))["icon"] === "prem") {
+    chrome.action.setIcon({ path: "images/prem_icon.png" });
+  } else if ((await chrome.storage.local.get(["icon"]))["icon"] === "standard") {
+    chrome.action.setIcon({ path: "images/icon.png" });
+  }
+}
+icon();
+
+function updateIcon(type) {
+  chrome.storage.local.set({ icon: type });
+  new Promise(async (resolve, reject) => {
+    await icon();
+    resolve();
+  });
+}
+
 // out
 function send(message) {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
@@ -7,23 +28,19 @@ function send(message) {
     chrome.tabs.sendMessage(activeTab.id, { message: message });
   });
 }
-
+updateIcon("prem");
 // in
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
   if (message === "accountIsPrem,true") {
-    chrome.action.setIcon({ path: "images/prem_icon.png" });
-    isPrem = true;
+    updateIcon("prem");
   } else if (message === "accountIsPrem,false") {
-    chrome.action.setIcon({ path: "images/icon.png" });
-    isPrem = false;
+    updateIcon("standard");
   } else if (message === "on") {
-    if (isPrem) {
-      chrome.action.setIcon({ path: "images/prem_icon.png" });
-    } else {
-      chrome.action.setIcon({ path: "images/icon.png" });
-    }
+    chrome.storage.local.set({ disabled: false });
+    icon();
   } else if (message === "off") {
-    chrome.action.setIcon({ path: "images/disabled_icon.png" });
+    chrome.storage.local.set({ disabled: true });
+    icon();
   } else if (message.includes("share")) {
     chrome.tabs.create({
       url: chrome.runtime.getURL(
