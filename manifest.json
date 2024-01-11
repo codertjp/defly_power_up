@@ -26,6 +26,7 @@
         "scripts/ports.js",
         "scripts/URL.js",
         "scripts/power.js",
+        "scripts/infoScreen.js",
         "scripts/onload.js"
       ]
     }

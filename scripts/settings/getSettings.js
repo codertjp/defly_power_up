@@ -42,7 +42,7 @@ const configTemp = {
 settings = {
   config:
     localStorage.getItem("config") === null
-      ? {}
+      ? { version: 2 }
       : JSON.parse(localStorage.getItem("config")),
   save(settings = this.config) {
     localStorage.setItem("config", JSON.stringify(settings));
@@ -50,10 +50,19 @@ settings = {
   load() {
     if (!(localStorage.getItem("config") === null)) {
       this.config = JSON.parse(localStorage.getItem("config"));
-    } else {
-      this.config = {};
     }
     this.config = mergeObjects(this.config, configTemp);
   },
 };
 settings.load();
+
+if (
+  (settings.config.version && settings.config.version === 2) ||
+  settings.config.keyBinds.length === 0
+) {
+  settings.config.version = 2;
+} else {
+  settings.config.keyBinds = {};
+  settings.config.version = 2;
+}
+settings.save();

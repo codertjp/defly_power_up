@@ -23,6 +23,11 @@ const actions = {
   helperSaveName: () => {
     document.querySelector("#accountsSave").click();
   },
+  infoScreen: () => {
+    getComputedStyle(document.querySelector("#info")).display === "block"
+      ? (document.querySelector("#info").style.display = "none")
+      : (document.querySelector("#info").style.display = "block");
+  },
   logOut: () => {
     document.querySelector("#connected-block > a").click();
   },
