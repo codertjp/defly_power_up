@@ -93,6 +93,7 @@ document.getElementById("alt").onchange = () => {
 };
 
 document.getElementById("discord").onchange = () => {
+    try {
     settings.config.addDiscord = document.getElementById("discord").checked;
     document.querySelector("#discordChatType").style.display = document.getElementById(
       "discord"
@@ -105,6 +106,9 @@ document.getElementById("discord").onchange = () => {
         ? "10px"
         : "0";
     settings.save();
+      } catch (e){
+        null;
+      }
   };
 
 let skin = new files.uploader("skinInp");
