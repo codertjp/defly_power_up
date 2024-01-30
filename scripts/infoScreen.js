@@ -111,7 +111,10 @@ new Promise(async (resolve, reject) => {
     document.getElementById("levelsInfo").innerText = stats.levels;
     document.getElementById("playersInfo").innerText = stats.players;
     document.getElementById("nearPlayersInfo").innerText = stats.nearPlayers;
+    if (!(typeof upgrading === 'undefined')) {
     document.getElementById("isAutoLevelingInfo").innerText = upgrading && upgradingOrder.length !== 0 ? 'True' : 'False';
+    }
+    document.getElementById("isAutoLevelingInfo").innerText = 'False';
     document.getElementById("xInfo").innerText = stats.x;
     document.getElementById("yInfo").innerText = stats.y;
 

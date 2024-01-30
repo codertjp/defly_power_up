@@ -107,4 +107,9 @@ const actions = {
       ? document.exitFullscreen()
       : document.querySelector("body").requestFullscreen();
   },
+  discordChatToggle: () => {
+    document.getElementById("discordChatPanel").style.display === "none"
+      ? (document.getElementById("discordChatPanel").style.display = "block")
+      : (document.getElementById("discordChatPanel").style.display = "non");
+  },
 };

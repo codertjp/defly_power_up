@@ -20,13 +20,13 @@
         "scripts/popup.js",
         "scripts/dropDowns/dropDown.js",
         "scripts/keybinds.js",
+        "scripts/infoScreen.js",
         "scripts/settings/loadSettings.js",
         "scripts/dropDowns/altName.js",
         "scripts/autoUpgrading.js",
         "scripts/ports.js",
         "scripts/URL.js",
         "scripts/power.js",
-        "scripts/infoScreen.js",
         "scripts/onload.js"
       ]
     }

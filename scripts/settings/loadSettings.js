@@ -12,15 +12,14 @@ deflySettings.innerHTML = `
       settings.config.addAlts ? "checked" : ""
     }>
     <label for="alt">Show alt name changer</label>
+    <div>
     <br />
-    <input type="checkbox" id="prem" name="prem" ${
-      "accountIsPrem" in settings.config
-        ? settings.config.accountIsPrem
-          ? "checked"
-          : ""
-        : ""
+    <input type="checkbox" id="discord" name="discord" ${
+      settings.config.addDiscord ? "checked" : ""
     }>
-    <label for="prem">Is account premium (Note: do not change unless this is wrong)</label>
+    <label for="discord">Show Open Discord Button</label>
+    <br />
+    <button id="checkForPrem" type="button" class="button" lang="en">Verify Premium</button>
     </div>
     <br />
     <br />
@@ -92,6 +91,21 @@ document.getElementById("alt").onchange = () => {
     : "none";
   settings.save();
 };
+
+document.getElementById("discord").onchange = () => {
+    settings.config.addDiscord = document.getElementById("discord").checked;
+    document.querySelector("#discordChatType").style.display = document.getElementById(
+      "discord"
+    ).checked
+      ? "block"
+      : "none";
+      document.querySelector("#chat-block").style.marginTop = document.getElementById(
+        "discord"
+      ).checked
+        ? "10px"
+        : "0";
+    settings.save();
+  };
 
 let skin = new files.uploader("skinInp");
 skin.load(document.getElementById("customSkins"));
@@ -184,27 +198,36 @@ let levelPresets = new dropDown(
 levelPresets.load(document.querySelector("#preset"));
 levelPresets.loadItems();
 
-// On/Off for account is prem
-document.getElementById("prem").onchange = () => {
-  settings.config.accountIsPrem = document.getElementById("prem").checked;
-  settings.save();
-  send("accountIsPrem" + (settings.config.accountIsPrem ? ",true" : ",false"));
-};
-
 // Open levels popup
 document.getElementById("openLvlConfig").onclick = () => {
   autoPopup.show();
 };
 
 // Make a popup for advanced settings
+
+let permissions = checkPermissions(false);
 let advancedSettings = new popup("advancedSettings");
 advancedSettings.load(
   `
         <div class="name">CSS customizer</div>
         <br />
-        <textarea style="width: 600px;" id="cssInput" placeholder="CSS in here, then click save CSS">${settings.config.css}</textarea>
+        <textarea ${
+          !(permissions.premium || hasLicense()) ? "disabled" : ""
+        } style="width: 600px;" id="cssInput" placeholder="${
+    permissions.premium
+      ? "You Can't use this feature, get premium to use it"
+      : "CSS in here, then click save CSS"
+  }">${settings.config.css}</textarea>
         <br /><br />
-        <button style="margin: auto;" type="button" class="button" onclick="let json = JSON.parse(localStorage.getItem('config')); json.css = document.getElementById('cssInput').value; localStorage.setItem('config', JSON.stringify(json)); location.reload();" lang="en">Save CSS (note: this will reload page)</button>
+        <button id="saveCSS" style="margin: auto;" type="button" class="button" lang="en">Save CSS (note: this will reload page)</button>
+        <br /><br /><br /><br />
+        <div class="name">License key</div>
+        <br />
+        <textarea style="width: 600px;" id="UUIDinput" placeholder="UUID License key"></textarea>
+          <br /><br />
+          <button id="saveUUID" style="margin: auto;" type="button" class="button" lang="en">Save License (note: this will reload page)</button>
+          <br /><br />
+          <button id="clearUUID" style="margin: auto;" type="button" class="button" lang="en">Clear License (note: this will reload page)</button>
         <br /><br /><br />
         <div class="name">Settings:</div>
         <br /><br />
@@ -236,7 +259,7 @@ document.getElementById("openAdvancedSettings").onclick = () => {
 };
 
 document.getElementById("addKeybindDropdown").innerHTML +=
-  '<option disabled>Chose an option</option>';
+  "<option disabled>Chose an option</option>";
 for (let key in actions) {
   document.getElementById("addKeybindDropdown").innerHTML +=
     '<option value="' + key + '">' + key + "</option>";
@@ -258,4 +281,86 @@ document.getElementById("removeKeybindDButton").onclick = () => {
   ];
   settings.save();
   loadKeyBinds();
+};
+
+document.getElementById("checkForPrem").onclick = () => {
+  let Licensed = hasLicense();
+  if (!Licensed) {
+    permissions = checkPermissions("signedIn");
+    if (permissions.signedIn === false) {
+      return;
+    }
+  } else {
+    alert("You don't have premium. But you have a License.");
+    return;
+  }
+  pageError("Checking If You Have Premium. Reloading Page Once Done.");
+  new Promise(async (resolve, reject) => {
+    // Open account settings
+    await wait(1000);
+    document.querySelector("#my-account-button").click();
+    // Look if it's premium
+    await wait(1000);
+    settings.config.accountIsPrem =
+      document.querySelector("#account-standard").style.display === "none";
+    await wait(1000);
+    // Close account settings
+    document.querySelector("#my-account > div.center > div > button").click();
+    // Save to settings
+    settings.save();
+    send(
+      "accountIsPrem" + (settings.config.accountIsPrem ? ",true" : ",false")
+    );
+    alert(
+      `You ${
+        settings.config.accountIsPrem
+          ? "have premium! You may now freely use all the features this extension has!"
+          : "don't have premium. You have limited use of this extension."
+      } `
+    );
+    location.reload();
+    resolve();
+  });
+};
+
+document.getElementById("saveCSS").onclick = () => {
+  permissions = checkPermissions();
+  if (permissions.premium === false) {
+    return;
+  }
+  if (permissions.signedIn === false) {
+    return;
+  }
+  let json = JSON.parse(localStorage.getItem("config"));
+  json.css = document.getElementById("cssInput").value;
+  localStorage.setItem("config", JSON.stringify(json));
+  location.reload();
+};
+
+document.getElementById("saveUUID").onclick = () => {
+  if (hasLicense(document.getElementById("UUIDinput").value)) {
+    settings.config.licenseKey = document.getElementById("UUIDinput").value;
+    settings.save();
+    alert(
+      "License Key Entered! You may now freely use all the features this extension has!"
+    );
+    location.reload();
+  } else {
+    alert(
+      "License Key Failed! This license key is incorrect or does'nt exist anymore."
+    );
+    settings.config.licenseKey = "";
+  }
+};
+
+document.getElementById("clearUUID").onclick = () => {
+  if (
+    confirm(
+      "You can not undo this, are you sure you would like to clear your license key?"
+    )
+  ) {
+    settings.config.licenseKey = '';
+    settings.save();
+    location.reload();
+  }
 };

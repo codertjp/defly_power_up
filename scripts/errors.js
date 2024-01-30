@@ -1,3 +1,35 @@
+// permissions
+function checkPermissions(type = "both", alert = true) {
+  let output = { premium: true, signedIn: true };
+  let Licensed = hasLicense();
+
+  if ((type === "signedIn" || type === "both") && stats.signedIn === "False") {
+    output.signedIn = false;
+    if (alert && !Licensed) {
+      pageError("Please Sign-In First", "popup");
+    }
+  }
+
+  if (type === "premium" && !settings.config.accountIsPrem) {
+    output.premium = false;
+    if (alert && !Licensed) {
+      pageError("You Must Have Premium For This Feature", "popup");
+    }
+  }
+
+  if (type === "both") {
+      output.premium = settings.config.accountIsPrem;
+    output.signedIn = !!(stats.signedIn === "True"); // Convert string to boolean
+  }
+
+  if (Licensed) {
+    output.premium = true;
+    output.signedIn = true;
+  }
+
+  return output;
+}
+
 // Loading screen / error page
 // Inline CSS and HTML
 var inlineStyles = `
@@ -14,7 +46,7 @@ var inlineStyles = `
     padding: 20px;
     margin-top: 20px;
     display: none;
-    z-index: 999;
+    z-index: 999999;
 }
 
 #popup-content {

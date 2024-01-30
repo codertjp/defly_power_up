@@ -76,6 +76,21 @@ UpgradingBlockCSS.innerHTML += `<style>
     #share:hover {
       border-bottom: 1px solid #ffffff;
     }
+    ${settings.config.addDiscord ? '#chat-block{ margin-top: 10px; }' : ''}
+    html {
+        overflow: hidden;
+    }
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    #settings-popup {
+        z-index: 101;
+    }
     </style>`;
 document.body.appendChild(UpgradingBlockCSS);
 

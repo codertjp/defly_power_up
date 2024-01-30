@@ -1,16 +1,3 @@
-// Locate child element with class name
-function findIndexOfSelectedElement(parentElement, className) {
-  const children = parentElement.children;
-
-  for (let i = 0; i < children.length; i++) {
-    if (children[i].classList.contains(className)) {
-      return i; // Return the index of the element with the specified class
-    }
-  }
-
-  return -1; // Return -1 if no element with the class is found
-}
-
 // Find index of prem icon
 async function getIcon() {
   if (!settings.config.accountIsPrem) {

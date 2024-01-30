@@ -8,10 +8,12 @@ function mergeObjects(obj1, obj2) {
 }
 
 const configTemp = {
+  licenseKey: '',
   upgrades: {},
   thx: true,
   css: "",
   addAlts: true,
+  addDiscord: true,
   activeSkinName: "",
   skins: [],
   accounts: [
