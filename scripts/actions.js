@@ -108,8 +108,12 @@ const actions = {
       : document.querySelector("body").requestFullscreen();
   },
   discordChatToggle: () => {
+    try {
     document.getElementById("discordChatPanel").style.display === "none"
       ? (document.getElementById("discordChatPanel").style.display = "block")
       : (document.getElementById("discordChatPanel").style.display = "non");
+    } catch (e) {
+        null;
+    }
   },
 };
