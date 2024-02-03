@@ -51,6 +51,9 @@ deflySettings.innerHTML = `
     <input id="upgradesJSON" style="width: 100%;" placeholder="Open Config or copy/paste JSON into this text box"/>
     <br />
     <br />
+    <div class="name">Custom Superpower Text:</div>
+    <input id="spText" style="width: 100%;" placeholder="Enter a superpower header text"/>
+    <br />
     <br />
     <div class="name">Game's played: ${localStorage.getItem(
       "gamesPlayed"
@@ -78,11 +81,19 @@ deflySettings.innerHTML = `
 // Load settings to page
 document.querySelector("#settings-popup").appendChild(deflySettings);
 
+document.querySelector("#spText").value = settings.config.spText;
+document.querySelector("#spText").onchange = ()=>{
+    settings.config.spText = document.querySelector("#spText").value;
+    document.querySelector("#choose-superpower > div").innerText =
+    settings.config.spText;
+    settings.save();
+}
+
 document.querySelector("#share").onclick = () => {
   send(`share:${encrypt(JSON.stringify(settings.config.levelPresets))}`);
 };
 
-document.getElementById("alt").onchange = () => {
+function toggleAlt() {
   settings.config.addAlts = document.getElementById("alt").checked;
   document.querySelector("#accounts").style.display = document.getElementById(
     "alt"
@@ -90,26 +101,38 @@ document.getElementById("alt").onchange = () => {
     ? "block"
     : "none";
   settings.save();
+}
+document.getElementById("alt").onchange = () => {
+  document.getElementById("alt2").checked =
+    document.getElementById("alt").checked;
+  toggleAlt();
 };
 
+let altNameCheckBox = document.createElement("span");
+altNameCheckBox.innerHTML = `<input title="Hide/Show Alt Name Changer" type="checkbox" id="alt2" checked="">`;
+document.querySelector("#server-block").appendChild(altNameCheckBox);
+altNameCheckBox.id = "alt2Span";
+altNameCheckBox.style.display = 'none';
+document.getElementById("alt2").onchange = () => {
+  document.getElementById("alt").checked =
+    document.getElementById("alt2").checked;
+  toggleAlt();
+};
+
+document.getElementById("alt2").checked = settings.config.addAlts;
+
 document.getElementById("discord").onchange = () => {
-    try {
+  try {
     settings.config.addDiscord = document.getElementById("discord").checked;
-    document.querySelector("#discordChatType").style.display = document.getElementById(
-      "discord"
-    ).checked
-      ? "block"
-      : "none";
-      document.querySelector("#chat-block").style.marginTop = document.getElementById(
-        "discord"
-      ).checked
-        ? "10px"
-        : "0";
+    document.querySelector("#discordChatType").style.display =
+      document.getElementById("discord").checked ? "block" : "none";
+    document.querySelector("#chat-block").style.marginTop =
+      document.getElementById("discord").checked ? "10px" : "0";
     settings.save();
-      } catch (e){
-        null;
-      }
-  };
+  } catch (e) {
+    null;
+  }
+};
 
 let skin = new files.uploader("skinInp");
 skin.load(document.getElementById("customSkins"));
@@ -218,8 +241,8 @@ advancedSettings.load(
         <textarea ${
           !(permissions.premium || hasLicense()) ? "disabled" : ""
         } style="width: 600px;" id="cssInput" placeholder="${
-    permissions.premium
-      ? "You Can't use this feature, get premium to use it"
+    !(permissions.premium || hasLicense())
+      ? "Premium feature"
       : "CSS in here, then click save CSS"
   }">${settings.config.css}</textarea>
         <br /><br />
@@ -363,7 +386,7 @@ document.getElementById("clearUUID").onclick = () => {
       "You can not undo this, are you sure you would like to clear your license key?"
     )
   ) {
-    settings.config.licenseKey = '';
+    settings.config.licenseKey = "";
     settings.save();
     location.reload();
   }

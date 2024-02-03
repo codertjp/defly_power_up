@@ -8,8 +8,15 @@ function mergeObjects(obj1, obj2) {
 }
 
 const configTemp = {
-  licenseKey: '',
+  spText: 'Select your superpower',
+  licenseKey: "",
   upgrades: {},
+  skinTabs: [
+    {
+      name: "Custom",
+      skins: [],
+    },
+  ],
   thx: true,
   css: "",
   addAlts: true,

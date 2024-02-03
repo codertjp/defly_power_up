@@ -59,6 +59,9 @@ function on() {
     settings.save();
   }
   accountIsPrem();
+  document.getElementById("alt2Span").style.display = "";
+  document.querySelector("#choose-superpower > div").innerText =
+  settings.config.spText;
   //   alts
   document.querySelector("#accounts").style.display = document.getElementById(
     "alt"
@@ -77,6 +80,8 @@ function on() {
 }
 // Turn off
 function off() {
+    document.querySelector("#choose-superpower > div").innerText = 'Select your superpower';
+  document.getElementById("alt2Span").style.display = "none";
   const elementsToRemove = document.querySelectorAll(".customBinding");
   elementsToRemove.forEach((element) => {
     element.parentNode.removeChild(element);

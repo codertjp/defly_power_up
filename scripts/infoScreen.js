@@ -35,7 +35,7 @@ info.innerHTML = `
 }
 </style>
 
-<div id="rightInfo">
+<div id="rightInfo" style="pointer-events: none;">
 <h4><span id="levelsInfo" class="number"></span> :Levels</h4>
 <h4><span id="playersInfo" class="number"></span> :Players</h4>
 <h4><span id="nearPlayersInfo" class="number"></span> :Near by</h4>
@@ -43,7 +43,7 @@ info.innerHTML = `
 <h4><span id="xInfo" class="number"></span>, <span id="yInfo" class="number"></span> :Pos</h4>
 </div>
 
-<div id="leftInfo">
+<div id="leftInfo" style="pointer-events: none;">
 <h4>Gamemode: <span id="gamemodeInfo" class="text"></span></h4>
 <h4>Server: <span id="serverInfo" class="text"></span></h4>
 <h4>URL: <span id="urlInfo" class="text"></span></h4>

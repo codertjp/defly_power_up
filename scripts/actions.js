@@ -111,7 +111,7 @@ const actions = {
     try {
     document.getElementById("discordChatPanel").style.display === "none"
       ? (document.getElementById("discordChatPanel").style.display = "block")
-      : (document.getElementById("discordChatPanel").style.display = "non");
+      : (document.getElementById("discordChatPanel").style.display = "none");
     } catch (e) {
         null;
     }
