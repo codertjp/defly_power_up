@@ -1,7 +1,7 @@
 {
   "name": "Defly Power Up+",
   "description": "Make Defly.io your own. Have tasks such as leveling up your copter and changing your name automated.",
-  "version": "1.2.3",
+  "version": "1.2.31",
   "manifest_version": 3,
   "icons": {
     "128": "images/icon.png"
