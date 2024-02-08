@@ -67,7 +67,26 @@ let altNameDropDown = new dropDown(
     });
   }
 );
+
 altNameDropDown.load(document.querySelector("#homepage-loaded"));
 altNameDropDown.loadItems();
-altNameDropDown.select(localStorage.getItem("username"));
 document.querySelector("#accounts").style.display = "none";
+
+let symbol = "♦";
+setTimeout(() => {
+  altNameDropDown.select(
+    document.querySelector("#username").value.replace(symbol, "")
+  );
+  document.querySelector("#username").value = document
+    .querySelector("#username")
+    .value.replace(symbol, "");
+
+  document.querySelector("#play-button").addEventListener("click", (e) => {
+    if (settings.config.nameIcon) {
+      document.querySelector("#username").value = `${symbol}${
+        document.querySelector("#username").value
+      }`;
+      document.querySelector("#username").setAttribute("disabled", "");
+    }
+  });
+}, 200);

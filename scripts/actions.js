@@ -24,9 +24,17 @@ const actions = {
     document.querySelector("#accountsSave").click();
   },
   infoScreen: () => {
-    getComputedStyle(document.querySelector("#info")).display === "block"
-      ? (document.querySelector("#info").style.display = "none")
-      : (document.querySelector("#info").style.display = "block");
+    if (getComputedStyle(document.querySelector("#info")).display === "block") {
+      document.querySelector("#info").style.display = "none";
+    } else {
+      document.querySelector("#info").style.display = "block";
+      if (!settings.config.batterySave) {
+        pageError(
+          "Info Screen is now active, this can use more battery power.",
+          "popup"
+        );
+      }
+    }
   },
   logOut: () => {
     document.querySelector("#connected-block > a").click();
@@ -109,11 +117,11 @@ const actions = {
   },
   discordChatToggle: () => {
     try {
-    document.getElementById("discordChatPanel").style.display === "none"
-      ? (document.getElementById("discordChatPanel").style.display = "block")
-      : (document.getElementById("discordChatPanel").style.display = "none");
+      document.getElementById("discordChatPanel").style.display === "none"
+        ? (document.getElementById("discordChatPanel").style.display = "block")
+        : (document.getElementById("discordChatPanel").style.display = "none");
     } catch (e) {
-        null;
+      null;
     }
   },
 };

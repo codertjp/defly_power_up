@@ -1,10 +1,25 @@
-const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`
-document.querySelector("#color-list").childNodes.forEach((e)=>{
-    if (e.nextElementSibling === null || e.nextElementSibling.style.backgroundColor === '') return;
-    try {
-        e.nextElementSibling.title = rgb2hex(e.nextElementSibling.style.backgroundColor)
-    } catch {null;}
-});
+document.querySelector("#skin-button").onclick = () => {
+  let colors = [
+    "#3d5dff",
+    "#924bff",
+    "#f659ff",
+    "#ff5fae",
+    "#fd3535",
+    "#ff8a2a",
+    "#93fe00",
+    "#18e21f",
+    "#008037",
+    "#00ffbc",
+    "#55d5ff",
+  ];
+  for (let i = 0; i < 11; i++) {
+    document.querySelector(`#color-list > div:nth-child(${i + 3})`).title =
+      colors[i];
+  }
+};
+
+
+
 
 // document.querySelector("#skin-list").childNodes.forEach((elm) => {
 //   if (elm.classList.contains("locked")) {

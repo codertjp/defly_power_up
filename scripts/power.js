@@ -59,6 +59,7 @@ function on() {
     settings.save();
   }
   accountIsPrem();
+  addonHTMLadd();
   document.getElementById("alt2Span").style.display = "";
   document.querySelector("#choose-superpower > div").innerText =
   settings.config.spText;

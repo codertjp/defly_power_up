@@ -8,7 +8,14 @@ function mergeObjects(obj1, obj2) {
 }
 
 const configTemp = {
-  spText: 'Select your superpower',
+  MiniMapZoom: 100,
+  nameIcon: true,
+  batteryOptimize: true,
+  batteryChangeOnPower: true,
+  batteryChangeNotification: true,
+  vars: {},
+  htmlAddons: [],
+  spText: "Select your superpower",
   licenseKey: "",
   upgrades: {},
   skinTabs: [
@@ -20,9 +27,11 @@ const configTemp = {
   thx: true,
   css: "",
   addAlts: true,
+  nameInsert: true,
   addDiscord: true,
   activeSkinName: "",
   skins: [],
+  batterySave: true,
   accounts: [
     {
       username: "Player",

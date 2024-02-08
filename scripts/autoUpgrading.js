@@ -77,9 +77,6 @@ UpgradingBlockCSS.innerHTML += `<style>
       border-bottom: 1px solid #ffffff;
     }
     ${settings.config.addDiscord ? '#chat-block{ margin-top: 10px; }' : ''}
-    html {
-        overflow: hidden;
-    }
     @keyframes fadeIn {
         from {
             opacity: 0;

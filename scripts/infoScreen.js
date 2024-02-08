@@ -117,7 +117,14 @@ new Promise(async (resolve, reject) => {
     document.getElementById("isAutoLevelingInfo").innerText = 'False';
     document.getElementById("xInfo").innerText = stats.x;
     document.getElementById("yInfo").innerText = stats.y;
-
-    await wait(200);
+    await wait(
+      getComputedStyle(document.querySelector("#info")).display === "block"
+        ? !settings.config.batteryOptimize
+          ? 100
+          : 2000
+        : !settings.config.batteryOptimize
+        ? 1000
+        : 10000
+    );
   }
 });

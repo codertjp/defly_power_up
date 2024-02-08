@@ -1,4 +1,3 @@
-//TODO: This is just an idea, maybe have a keybind goto a obj => {'playButtonClick': ()=>{document.querySelector("#play-button").click();}} that has many diff actions.
 //TODO: Also maybe have endless keybinds that can be tie to an action? This needs a good simple UI.
 //TODO: When the main keybinds from defly are in setup mode don't fire custom keybind event.
 

@@ -7,17 +7,29 @@ deflySettings.innerHTML = `
     <br />
     <br />
     <div style="width: 100%; text-align: center;"><h2>Defly Helper</h2></div>
+    <br />
+    <a href="https://discord.gg/9yqe4pUc9V"><button type="button" class="button" lang="en">Join our discord to give feedback!</button></a>
+    <br />
+    <br />
+    <div class="name">Mini Map Zoom</div>
+    <input id="MiniMapZoom" type="range" min="100" max="500" />
+    <br />
+    <br />
     <div>
     <input type="checkbox" id="alt" name="alt" ${
       settings.config.addAlts ? "checked" : ""
     }>
     <label for="alt">Show alt name changer</label>
-    <div>
     <br />
     <input type="checkbox" id="discord" name="discord" ${
       settings.config.addDiscord ? "checked" : ""
     }>
     <label for="discord">Show Open Discord Button</label>
+    <br />
+    <input type="checkbox" id="nameIcon" name="nameIcon" ${
+      settings.config.nameIcon ? "checked" : ""
+    }>
+    <label for="nameIcon">Name Icon (Please leave on!)</label>
     <br />
     <button id="checkForPrem" type="button" class="button" lang="en">Verify Premium</button>
     </div>
@@ -55,6 +67,12 @@ deflySettings.innerHTML = `
     <input id="spText" style="width: 100%;" placeholder="Enter a superpower header text"/>
     <br />
     <br />
+    <button id="openHTMLaddons" type="button" class="button" lang="en">Open HTML addons</button>
+    <br />
+    <br />
+    <button id="openBatterySettings" type="button" class="button" lang="en">Open Battery Settings</button>
+    <br />
+    <br />
     <div class="name">Game's played: ${localStorage.getItem(
       "gamesPlayed"
     )}</div>
@@ -82,12 +100,12 @@ deflySettings.innerHTML = `
 document.querySelector("#settings-popup").appendChild(deflySettings);
 
 document.querySelector("#spText").value = settings.config.spText;
-document.querySelector("#spText").onchange = ()=>{
-    settings.config.spText = document.querySelector("#spText").value;
-    document.querySelector("#choose-superpower > div").innerText =
+document.querySelector("#spText").onchange = () => {
+  settings.config.spText = document.querySelector("#spText").value;
+  document.querySelector("#choose-superpower > div").innerText =
     settings.config.spText;
-    settings.save();
-}
+  settings.save();
+};
 
 document.querySelector("#share").onclick = () => {
   send(`share:${encrypt(JSON.stringify(settings.config.levelPresets))}`);
@@ -112,14 +130,12 @@ let altNameCheckBox = document.createElement("span");
 altNameCheckBox.innerHTML = `<input title="Hide/Show Alt Name Changer" type="checkbox" id="alt2" checked="">`;
 document.querySelector("#server-block").appendChild(altNameCheckBox);
 altNameCheckBox.id = "alt2Span";
-altNameCheckBox.style.display = 'none';
+altNameCheckBox.style.display = "none";
 document.getElementById("alt2").onchange = () => {
   document.getElementById("alt").checked =
     document.getElementById("alt2").checked;
   toggleAlt();
 };
-
-document.getElementById("alt2").checked = settings.config.addAlts;
 
 document.getElementById("discord").onchange = () => {
   try {
@@ -132,6 +148,36 @@ document.getElementById("discord").onchange = () => {
   } catch (e) {
     null;
   }
+};
+
+document.getElementById("MiniMapZoom").onchange = () => {
+  settings.config.MiniMapZoom = document.getElementById("MiniMapZoom").value;
+  settings.save();
+  document.querySelector(
+    "#minimap"
+  ).style.zoom = `${settings.config.MiniMapZoom}%`;
+};
+document.getElementById("MiniMapZoom").value = settings.config.MiniMapZoom;
+document.querySelector(
+  "#minimap"
+).style.zoom = `${settings.config.MiniMapZoom}%`;
+
+document.getElementById("nameIcon").onchange = () => {
+  if (
+    document.getElementById("nameIcon").checked ||
+    confirm(
+      "DISCLAIMER: We highly recommend you leave this setting enabled. This setting adds a custom symbol before your nickname so you can be recognized in-game as a user of the extension. If you want to disable the setting, press OK."
+    )
+  ) {
+    settings.config.nameIcon = document.getElementById("nameIcon").checked;
+    settings.save();
+  } else {
+    document.getElementById("nameIcon").checked = true;
+  }
+};
+
+document.getElementById("openBatterySettings").onclick = () => {
+  batteryPopup.show();
 };
 
 let skin = new files.uploader("skinInp");
@@ -231,7 +277,6 @@ document.getElementById("openLvlConfig").onclick = () => {
 };
 
 // Make a popup for advanced settings
-
 let permissions = checkPermissions(false);
 let advancedSettings = new popup("advancedSettings");
 advancedSettings.load(
