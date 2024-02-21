@@ -124,4 +124,20 @@ const actions = {
       null;
     }
   },
+  togglePlayerMute: () => {
+    settings.config.muteActive = !settings.config.muteActive;
+    setting.save();
+    document.getElementById('settings-disable-block-players').checked = settings.config.muteActive;
+    pageError(
+      `Mute targeting is now ${
+        settings.config.muteActive ? "enabled" : "disabled"
+      }`,
+      "popup"
+    );
+  },
+  unmuteAllPlayers: () => {
+    pageError(`Unmuted all players`, "popup");
+    settings.config.mutedPeeps = [];
+    mutedListChanged();
+  },
 };

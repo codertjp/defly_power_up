@@ -1,7 +1,7 @@
 const gamemodes = ["FFA", "TEAM", "DEFUSE", "E-FFA", "1V1"];
 let stats = {};
 let info = document.createElement("div");
-info.id="info";
+info.id = "info";
 info.innerHTML = `
 <style>
 #info {
@@ -91,8 +91,24 @@ new Promise(async (resolve, reject) => {
       url: location.href,
       appVersion: navigator.appVersion,
       y:
-      Math.round(((parseFloat(document.querySelector("#minimap-position").style.top.replace(/([0-9]+\.[0-9]{1})[0-9]+%/g, "$1")) -100) * - 1) * 10)/10,
-      x: Math.round(parseFloat(document.querySelector("#minimap-position").style.left.replace(/([0-9]+\.[0-9]{1})[0-9]+%/g, "$1"))*10)/10,
+        Math.round(
+          (parseFloat(
+            document
+              .querySelector("#minimap-position")
+              .style.top.replace(/([0-9]+\.[0-9]{1})[0-9]+%/g, "$1")
+          ) -
+            100) *
+            -1 *
+            10
+        ) / 10,
+      x:
+        Math.round(
+          parseFloat(
+            document
+              .querySelector("#minimap-position")
+              .style.left.replace(/([0-9]+\.[0-9]{1})[0-9]+%/g, "$1")
+          ) * 10
+        ) / 10,
     };
 
     stats.x = isNaN(stats.x) ? "0" : stats.x === "0%" ? "0" : stats.x;
@@ -111,10 +127,11 @@ new Promise(async (resolve, reject) => {
     document.getElementById("levelsInfo").innerText = stats.levels;
     document.getElementById("playersInfo").innerText = stats.players;
     document.getElementById("nearPlayersInfo").innerText = stats.nearPlayers;
-    if (!(typeof upgrading === 'undefined')) {
-    document.getElementById("isAutoLevelingInfo").innerText = upgrading && upgradingOrder.length !== 0 ? 'True' : 'False';
+    if (!(typeof upgrading === "undefined")) {
+      document.getElementById("isAutoLevelingInfo").innerText =
+        upgrading && upgradingOrder.length !== 0 ? "True" : "False";
     }
-    document.getElementById("isAutoLevelingInfo").innerText = 'False';
+    document.getElementById("isAutoLevelingInfo").innerText = "False";
     document.getElementById("xInfo").innerText = stats.x;
     document.getElementById("yInfo").innerText = stats.y;
     await wait(
@@ -128,3 +145,38 @@ new Promise(async (resolve, reject) => {
     );
   }
 });
+
+const menuItems = [
+  { name: "Home", link: "https://defly.io" },
+  { name: "Skin Editor", link: "https://defly.io?skin-editor" },
+  { name: "Map Editor", link: "https://defly.io/?defuse-editor" },
+  { name: "Mort's Editor", link: "https://marmuzzcju.github.io/Map-Editor/" },
+  { name: "Defly Monster", link: "https://skins.defly.monster/" },
+  {
+    name: "All Records",
+    link: "https://docs.google.com/spreadsheets/d/1phnv1T3sZBpIZnNHyv0vJxP9i6go_bhP5vxldWJvwFs/edit#gid=1881015420",
+  },
+  {
+    name: "Skin ID",
+    link: " https://docs.google.com/spreadsheets/d/1RWiaX_GJjaO9f9FyA78wD-ETSEL3_7Kbmexg5xBQ-ZA/edit#gid=757313197",
+  },
+];
+
+let menuHTML = "";
+
+menuItems.forEach((item) => {
+  menuHTML += `<a href="${item.link}"><button style="width: 135px;" type="button" class="button" lang="en">${item.name}</button></a><br />`;
+});
+let menu = document.createElement("div");
+menu.id = "menu";
+menu.innerHTML = `
+<div>
+    ${menuHTML}
+</div>
+`;
+document
+  .querySelector("#homepage-content > div.right-box > div")
+  .appendChild(menu);
+document
+  .querySelector("#homepage-content > div.right-box > div")
+  .classList.add("scrollbar-black");

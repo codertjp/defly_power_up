@@ -42,3 +42,26 @@ function findIndexOfSelectedElement(parentElement, className) {
 
   return -1; // Return -1 if no element with the class is found
 }
+
+String.prototype.applyTo = function (ID = "", element = document.body) {
+  let temp = document.createElement("div");
+  if (ID !== "") {
+    temp.id = ID;
+  }
+  temp.innerHTML = this;
+  element.appendChild(temp);
+};
+
+// `<div style="position: absolute; z-index: 10000; top: 50%; left: 50%; transform: translate(-50%, -50%);">
+// <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
+//   <circle cx="32" cy="32" r="30" fill="none" stroke="red" stroke-width="4" />
+// </svg>
+// </div>
+// `.applyTo();
+
+`<div style="position: absolute; z-index: 10000; top: 50%; left: 50%; transform: translate(-50%, -50%); touch-action: none; pointer-events: none; display: none;">
+<img style="touch-action: none;" src="https://cdn.discordapp.com/attachments/1205581665519280269/1205643892851212318/hitBox.png?ex=65d91e5f&is=65c6a95f&hm=9f86adc34cba8284723e2e80c9691a0e3e97d264a97fc8a3279dc2150890776e&"/>
+</div>
+
+
+`.applyTo('HITBOX');

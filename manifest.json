@@ -16,6 +16,7 @@
         "scripts/message.js",
         "scripts/actions.js",
         "scripts/crypt.js",
+        "scripts/NSFWtester.js",
         "scripts/files.js",
         "scripts/popup.js",
         "scripts/dropDowns/dropDown.js",
@@ -30,8 +31,10 @@
         "scripts/URL.js",
         "scripts/power.js",
         "scripts/skinTabs.js",
+        "scripts/deflyMonster.js",
         "scripts/bannedTester.js",
         "scripts/injectHTML.js",
+        "scripts/chatMute.js",
         "scripts/onload.js"
       ]
     }

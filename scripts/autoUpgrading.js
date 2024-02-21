@@ -76,7 +76,7 @@ UpgradingBlockCSS.innerHTML += `<style>
     #share:hover {
       border-bottom: 1px solid #ffffff;
     }
-    ${settings.config.addDiscord ? '#chat-block{ margin-top: 10px; }' : ''}
+    ${settings.config.addDiscord ? "#chat-block{ margin-top: 10px; }" : ""}
     @keyframes fadeIn {
         from {
             opacity: 0;
@@ -85,8 +85,30 @@ UpgradingBlockCSS.innerHTML += `<style>
             opacity: 1;
         }
     }
+    @keyframes slideFromRight {
+        from {
+            right: -500px;
+        }
+        to {
+            right: 0px;
+        }
+    }
     #settings-popup {
         z-index: 101;
+    }
+    .selectedButton{
+        background: #00124d;
+        box-shadow: 0 2px 10px rgba(0,0,0,.2), 0 4px 0 #00124d;
+    }
+    #homepage-content > div.right-box > div {
+        max-height: 530px;
+        overflow-y: auto;
+        width: 80%;
+        height: 50%;
+        background-color: rgba(255,255,255,.2);
+        padding-left: 70px;
+        padding-right: 70px;
+        border-radius: 35px;
     }
     </style>`;
 document.body.appendChild(UpgradingBlockCSS);

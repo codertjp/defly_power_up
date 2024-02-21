@@ -8,6 +8,10 @@ function mergeObjects(obj1, obj2) {
 }
 
 const configTemp = {
+  screen1v1: true,
+  chatBlocking: true,
+  mutedPeeps: [],
+  muteActive: true,
   MiniMapZoom: 100,
   nameIcon: true,
   batteryOptimize: true,
