@@ -36,7 +36,7 @@ new Promise((resolve, reject) =>
       let dc = document.createElement("div");
       dc.innerHTML = `
 <div id="discordChatPanel" style="
-    z-index: 100;
+    z-index: 1000;
     position: absolute;
     display: none;
     animation: fadeIn 0.5s ease-out;
@@ -58,7 +58,7 @@ new Promise((resolve, reject) =>
       let discordChatType = document.createElement("div");
       discordChatType.innerHTML = `
     <div style="
-    z-index: 100;
+    z-index: 1001;
     position: absolute;
 ">
     <button id="discordChatType" style="width: 250px; padding: 2px; border: none; border-radius: 10px; background: linear-gradient(to right, #007bff, #0047ab); color: #fff; font-size: 16px; cursor: pointer; transition: opacity 0.3s;${
@@ -167,3 +167,10 @@ new Promise((resolve, reject) =>
 //     }, 200); //2 secs
 //   }
 // }, 600);
+
+document.body.addEventListener("click", (e) => {
+  let elm = e.srcElement;
+  log(`Click Event: ${elm.tagName} tag with id "${elm.id}" and classes "${JSON.stringify(elm.classList)}"`);
+});
+
+log("Loaded");

@@ -25,6 +25,7 @@ setInterval(() => {
     document.getElementById("batteryOptimize").checked = !battery.charging;
   }
   if (old !== battery.charging && settings.config.batteryChangeNotification) {
+    log(`Power on ${!settings.config.batteryOptimize ? "Wall" : "battery"}`);
     pageError(
       `Power mode: ${!settings.config.batteryOptimize ? "Wall" : "battery"}.`,
       "popup"

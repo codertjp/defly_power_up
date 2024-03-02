@@ -100,6 +100,7 @@ function pageError(
   text = "There has been an unknown error loading the page...",
   type = "screen"
 ) {
+  log(`Page Error: ${text} Display as: ${type}`);
   if (type === "screen") {
     let loader = document.createElement("div");
     loader.innerHTML = `

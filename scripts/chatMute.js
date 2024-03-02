@@ -1,6 +1,8 @@
 const chatHistory = document.querySelector("#chat-history-full");
 const newChat = document.querySelector("#chat-history");
-
+document.getElementById("chat-input").onpaste = (e) => {
+  return e;
+};
 // Add new menu button for lower quality
 const qualityButton = document.createElement("button");
 qualityButton.id = "button-quality-very-low";
@@ -129,6 +131,7 @@ function chatChanged(unusedLol) {
 }
 
 function addPlayerAsMuted(name) {
+  log(`Muted: ${name}`);
   pageError(`Muted: ${name}`, "popup");
   if (!settings.config.mutedPeeps.includes(name)) {
     settings.config.mutedPeeps.push(name);

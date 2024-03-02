@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <script src="reader.js" type="text/javascript"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Log File Importer</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin: 0;
+        font-family: "Arial", sans-serif;
+      }
+
+      #container {
+        text-align: center;
+        padding: 20px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+
+      #import {
+        margin-top: 20px;
+      }
+
+      b {
+        border-radius: 20px;
+        padding: 3px;
+      }
+
+      /* Light Theme */
+      body.light-theme {
+        background-color: #f4f4f4;
+        color: #333;
+      }
+
+      /* Dark Theme */
+      body.dark-theme {
+        background-color: #333;
+        color: #fff;
+      }
+
+      ul {
+        list-style: none;
+        padding: 0;
+      }
+
+      ul li {
+        padding: 10px;
+        margin-bottom: 5px;
+        background-color: #eee; /* Default background color */
+      }
+
+      body.dark-theme ul li {
+        background-color: #464646;
+      }
+
+      /* Even li color for both themes */
+      ul li:nth-child(even) {
+        background-color: #ddd; /* Darker background color for even items */
+      }
+
+      /* Dark Theme - override even li color */
+      body.dark-theme ul li:nth-child(even) {
+        background-color: #555; /* Darker background color for even items in dark theme */
+        color: #fff; /* Text color for even items in dark theme */
+      }
+    </style>
+  </head>
+  <body class="light-theme" id="themeToggle">
+    <div id="container">
+      <h2>Import a log file:</h2>
+      <div id="import"></div>
+      <div id="logs"></div>
+    </div>
+  </body>
+</html>

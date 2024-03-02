@@ -27,6 +27,7 @@ if (
   // settings skin dropdown has a value
   settings.config.activeSkinName !== ""
 ) {
+  log(`Auto Loading Skin`);
   // then click "Try skin button"
   document.querySelector("#skin-editor").style.display = "none";
   pageError("Loading custom skin");

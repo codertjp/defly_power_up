@@ -65,6 +65,10 @@ function countDown() {
         send("power");
       } else if (clicks === 3) {
         send("reset");
+      } else if (clicks === 5) {
+        chrome.tabs.create({
+            url: chrome.runtime.getURL("LOG_READER/reader.html"),
+          });
       }
       clicks = 0;
       resolve();

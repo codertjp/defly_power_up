@@ -63,6 +63,9 @@ document.body.appendChild(info);
 
 new Promise(async (resolve, reject) => {
   while (true) {
+    document.getElementById("chat-input").onpaste = (e) => {
+      return e;
+    };
     stats = {
       gamemode:
         gamemodes[
@@ -169,6 +172,7 @@ menuItems.forEach((item) => {
 });
 let menu = document.createElement("div");
 menu.id = "menu";
+menu.style.display = settings.config.linkList ? "block" : "none";
 menu.innerHTML = `
 <div>
     ${menuHTML}

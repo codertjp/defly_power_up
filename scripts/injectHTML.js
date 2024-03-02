@@ -214,26 +214,37 @@ function addonHTMLadd() {
   document.querySelectorAll("*").forEach((element) => {
     try {
       if (element.getAttribute("data-var-def") !== null) {
-        settings.config.vars[element.getAttribute("data-var-def")] = {
-          value: element.getAttribute("data-var-value"),
-          elms: [],
-        };
-        varActions.reload(element.getAttribute("data-var-def"));
+        element
+          .getAttribute("data-var-def")
+          .split(",")
+          .forEach((item) => {
+            settings.config.vars[item] = {
+              value: element.getAttribute("data-var-value"),
+              elms: [],
+            };
+            varActions.reload(item);
+          });
         settings.save();
       }
       if (element.getAttribute("data-action") !== null) {
-        element.onclick = (e) => {
+        console.log("ACTION", element.getAttribute("data-action"));
+        element.addEventListener("click", (e) => {
           actions[e.srcElement.getAttribute("data-action")]();
-        };
+        });
       }
       if (element.getAttribute("data-var-action") !== null) {
-        element.onclick = (e) => {
-          varActions[e.srcElement.getAttribute("data-var-action")](
-            element.getAttribute("data-var-name"),
-            parseInt(element.getAttribute("data-var-value")),
-            e.srcElement
-          );
-        };
+        element.addEventListener("click", (e) => {
+          element
+            .getAttribute("data-var-name")
+            .split(",")
+            .forEach((item) => {
+              varActions[e.srcElement.getAttribute("data-var-action")](
+                item,
+                parseInt(element.getAttribute("data-var-value")),
+                e.srcElement
+              );
+            });
+        });
       }
       if (element.getAttribute("data-var-set") !== null) {
         if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {

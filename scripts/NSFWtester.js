@@ -1777,44 +1777,57 @@ String.prototype.strip = function () {
 
 function testForNSFW(
   text,
-  replacement = (match) => {
-    return "*".repeat(match.length);
+  replacement = (text, word) => {
+    return text.replace(word, "*".repeat(word.length));
   }
 ) {
-  let newText = text;
+  let newText = text,
+    isExplicit = false;
   text = text.toLowerCase();
   decryptList(words).forEach((word) => {
-    if (text.includes(word)){
-        console.log('YES', word);
+    if (text.includes(word)) {
+      console.log("YES", word);
+      newText = replacement(text, word);
+      isExplicit = true;
     }
   });
-  //   const regex = new RegExp(`${decryptList(words).join("|")}`, "g");
-  //   const isExplicit = text.match(regex) !== null;
-  //   let newText = text;
-  //   if (isExplicit) {
-  //     newText = text.replace(regex, (match) => replacement(match));
-  //   }
-  //   return [newText, text, isExplicit];
+  if (isExplicit) {
+    log(`NSFW Test: Found Word In: ${text}`);
+  }
+  return [newText, text, isExplicit];
+  // const regex = new RegExp(`${decryptList(words).join("|")}`, "g");
+  // const isExplicit = text.match(regex) !== null;
+  // let newText = text;
+  // if (isExplicit) {
+  //   newText = text.replace(regex, (match) => replacement(match));
+  // }
+  // return [newText, text, isExplicit];
 }
 
 // add a word:
 // console.log(encryptList((() => {let item = decryptList(words);item.push("WORD");return item;})()));
 
 document.querySelector("#play-button").addEventListener("click", () => {
+  log(
+    `Play in game mode: ${findIndexOfSelectedElement(
+      document.querySelector("#homepage-loaded > div.game-modes"),
+      "selected"
+    )}`
+  );
   if (document.querySelector("#gamemode-4").classList.contains("selected")) {
     setInterval(() => {
       Array.from(document.querySelector("#gm-1v1-players").childNodes).forEach(
         (e) => {
+          console.log(testForNSFW(e.childNodes[0].innerText.strip()));
           if (
             testForNSFW(e.childNodes[0].innerText.strip())[2] &&
             settings.config.screen1v1
-          ) {``
-            e.style.display = "nine";
+          ) {
+            ``;
+            e.style.display = "none";
           }
         }
       );
     }, 500);
   }
 });
-
-console.log(testForNSFW("cya"));

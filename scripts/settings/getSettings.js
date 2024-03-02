@@ -8,6 +8,7 @@ function mergeObjects(obj1, obj2) {
 }
 
 const configTemp = {
+  linkList: true,
   screen1v1: true,
   chatBlocking: true,
   mutedPeeps: [],
@@ -68,6 +69,7 @@ settings = {
       : JSON.parse(localStorage.getItem("config")),
   save(settings = this.config) {
     localStorage.setItem("config", JSON.stringify(settings));
+    this.config = settings;
   },
   load() {
     if (!(localStorage.getItem("config") === null)) {

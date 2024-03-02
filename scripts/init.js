@@ -23,8 +23,10 @@ let Licenses =
   "WyI0Y2Q4NDg5Ny1jYWQxLTQzYjctOTg1OS1iNDQ3ZDBmMmIyYTciLCJiMDhkMWJmNS1jNmRlLTQyYjAtOGI1My1kN2EwNDJmNDVmZDMiLCI3Y2IxOTkwNi05MzAxLTQ2MjYtOWYwZS02Y2U2ZDI4Y2U1NzMiLCI3M2MyMTcwYS0zN2I4LTRjNGYtOTIzNy02YzliMzFkMzQzNzMiXQ==";
 function hasLicense(key = settings.config.licenseKey) {
   if (key !== "" && JSON.parse(decrypt(Licenses)).includes(key)) {
+    log(`Unlocked using License Key`);
     return true;
   } else if (key !== "") {
+    log(`Tried unlocking using License Key, But failed`);
     alert("License Key Failed! This license key doesn't exist anymore.");
   }
   return false;
@@ -62,6 +64,4 @@ String.prototype.applyTo = function (ID = "", element = document.body) {
 `<div style="position: absolute; z-index: 10000; top: 50%; left: 50%; transform: translate(-50%, -50%); touch-action: none; pointer-events: none; display: none;">
 <img style="touch-action: none;" src="https://cdn.discordapp.com/attachments/1205581665519280269/1205643892851212318/hitBox.png?ex=65d91e5f&is=65c6a95f&hm=9f86adc34cba8284723e2e80c9691a0e3e97d264a97fc8a3279dc2150890776e&"/>
 </div>
-
-
 `.applyTo('HITBOX');

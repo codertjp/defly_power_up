@@ -28,6 +28,7 @@ document.addEventListener("keyup", (event) => {
     for (let key in settings.config.keyBinds) {
       let keySet = settings.config.keyBinds[key].keys;
       if (keySet[0] === type || keySet[1] === type) {
+        log(`Keybind: key: ${type} to  action: ${key}`);
         try {
           keyBindActions[key]();
         } catch {

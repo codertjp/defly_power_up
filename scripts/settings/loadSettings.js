@@ -31,6 +31,11 @@ deflySettings.innerHTML = `
     }>
     <label for="nameIcon">Name Icon (Please leave on!)</label>
     <br />
+    <input type="checkbox" id="linkList" name="linkList" ${
+      settings.config.linkList ? "checked" : ""
+    }>
+    <label for="linkList">Show Links on homepage </label>
+    <br />
     <button id="checkForPrem" type="button" class="button" lang="en">Verify Premium</button>
     </div>
     <br />
@@ -102,13 +107,17 @@ document.querySelector("#settings-popup").appendChild(deflySettings);
 
 document.querySelector("#spText").value = settings.config.spText;
 document.querySelector("#spText").onchange = () => {
+  log(`Superpower text to: ${document.querySelector("#spText").value}`);
   settings.config.spText = document.querySelector("#spText").value;
   document.querySelector("#choose-superpower > div").innerText =
     settings.config.spText;
   settings.save();
 };
+document.querySelector("#choose-superpower > div").innerText =
+  settings.config.spText;
 
 document.querySelector("#share").onclick = () => {
+  log(`Share Open`);
   send(`share:${encrypt(JSON.stringify(settings.config.levelPresets))}`);
 };
 
@@ -121,6 +130,16 @@ function toggleAlt() {
     : "none";
   settings.save();
 }
+
+document.getElementById("linkList").onchange = () => {
+  settings.config.linkList = document.getElementById("linkList").checked;
+  document.querySelector("#menu").style.display = document.getElementById("linkList")
+    .checked
+    ? "block"
+    : "none";
+  settings.save();
+};
+
 document.getElementById("alt").onchange = () => {
   document.getElementById("alt2").checked =
     document.getElementById("alt").checked;
@@ -141,6 +160,7 @@ document.getElementById("alt2").onchange = () => {
 };
 
 document.getElementById("discord").onchange = () => {
+  log(`Open Discord`);
   try {
     settings.config.addDiscord = document.getElementById("discord").checked;
     document.querySelector("#discordChatType").style.display =
@@ -154,6 +174,7 @@ document.getElementById("discord").onchange = () => {
 };
 
 document.getElementById("MiniMapZoom").onchange = () => {
+  log(`Mini map zoom to: ${settings.config.MiniMapZoom}%`);
   settings.config.MiniMapZoom = document.getElementById("MiniMapZoom").value;
   settings.save();
   document.querySelector(
@@ -177,6 +198,7 @@ document.getElementById("nameIcon").onchange = () => {
   } else {
     document.getElementById("nameIcon").checked = true;
   }
+  log(`Name icon set to: ${document.getElementById("nameIcon").checked}`);
 };
 
 document.getElementById("openBatterySettings").onclick = () => {
@@ -307,13 +329,19 @@ advancedSettings.load(
         <br /><br /><br />
         <div class="name">Settings:</div>
         <br /><br />
-        <div class="name">Import:</div>
+        <div class="name">Import Config:</div>
         <br />
         <div id="importSettings"></div>
+        <br />
+        <div class="name">Import Theme:</div>
+        <br />
+        <div id="importTheme"></div>
         <br /><br />
         <div class="name">Export:</div>
         <br/>
         <button id="exportSettings" style="margin: auto;" type="button" class="button" lang="en">Download config file</button>
+        <br/><br />
+        <button id="exportLogs" style="margin: auto;" type="button" class="button" lang="en">Download developer logs</button>
     `,
   document.body
 );
@@ -325,9 +353,79 @@ let settingsFile = new files.uploader("settingsFile", (text) => {
 });
 settingsFile.load(document.getElementById("importSettings"));
 
+// Make input for import
+let settingsTheme = new files.uploader("settingsTheme", (text) => {
+  console.log(text);
+  console.log(JSON.parse(text));
+  let json = JSON.parse(text),
+    newKeys = "",
+    unboundKeys = "";
+  for (const [key, value] of Object.entries(json)) {
+    if (settings.config[key] !== undefined) {
+      newKeys += `${key}, `;
+    } else {
+      unboundKeys += `${key}`;
+    }
+  }
+  if (unboundKeys.length !== 0) {
+    console.warn(
+      `WARNING: keys: "${unboundKeys}" were not bound. They will be added to the config file but will not do anything.`
+    );
+  }
+  if (
+    confirm(
+      `Warning: Merging this theme file with your current config file will replace the following keys: ${newKeys} NOTE: Some keys will be combined not replaced.`
+    )
+  ) {
+    // json = mergeObjects(json, settings.config);
+    for (let key in settings.config) {
+      console.log(key);
+      if (key in json) {
+        if (typeof settings.config[key] === "object") {
+          if (settings.config[key].constructor == Object) {
+            console.log("OBJECT MERGE");
+            json[key] = mergeObjects(json[key], settings.config[key]);
+          } else if (settings.config[key].constructor == Array) {
+            console.log(settings.config[key], json[key]);
+            console.log("LIST MERGE");
+            json[key].push(...settings.config[key]);
+          }
+        } else if (key === "css") {
+          console.log("STRING MERGE");
+          json[key] = json[key] || ""; // Initialize json[key] as an empty string if it's not already
+          json[key] += settings.config[key]; // Concatenate strings
+        } else {
+          console.log("REPLACE");
+          json[key] = settings.config[key];
+        }
+      } else {
+        console.log("KEEP");
+        json[key] = settings.config[key];
+      }
+      console.log("");
+      console.log("");
+    }
+    settings.save(json);
+    // location.reload();
+  }
+});
+settingsTheme.load(document.getElementById("importTheme"));
+
 // Click events for advanced settings
 document.getElementById("exportSettings").onclick = () => {
+  alert(
+    `This file is not encrypted(will be in 1.2.5) so if you share this your name font could be copied! Including all other things saved in the extension.`
+  );
+  log(`Exporting Settings`);
   files.downloader(JSON.stringify(settings.config), "CONFIG", "txt");
+};
+
+document.getElementById("exportLogs").onclick = () => {
+  alert(
+    `This file is encrypted. This file allows devs to read the actions you did leading up to the error.`
+  );
+  log(`Exporting Logs`);
+  files.downloader(localStorage.getItem("logs"), "DEV_LOGS", "txt");
 };
 
 document.getElementById("openAdvancedSettings").onclick = () => {
@@ -342,6 +440,7 @@ for (let key in actions) {
 }
 document.getElementById("addKeybindDropdown").value = "Chose an option";
 document.getElementById("addKeybindDButton").onclick = () => {
+  log(`Adding Keybind: ${document.getElementById("addKeybindDropdown").value}`);
   settings.config.keyBinds[
     document.getElementById("addKeybindDropdown").value
   ] = {
@@ -352,6 +451,9 @@ document.getElementById("addKeybindDButton").onclick = () => {
 };
 
 document.getElementById("removeKeybindDButton").onclick = () => {
+  log(
+    `Removing Keybind: ${document.getElementById("addKeybindDropdown").value}`
+  );
   delete settings.config.keyBinds[
     document.getElementById("addKeybindDropdown").value
   ];
@@ -360,6 +462,7 @@ document.getElementById("removeKeybindDButton").onclick = () => {
 };
 
 document.getElementById("checkForPrem").onclick = () => {
+  log(`Checking for premium`);
   let Licensed = hasLicense();
   if (!Licensed) {
     permissions = checkPermissions("signedIn");
@@ -400,6 +503,7 @@ document.getElementById("checkForPrem").onclick = () => {
 };
 
 document.getElementById("saveCSS").onclick = () => {
+  log(`Saved CSS`);
   permissions = checkPermissions();
   if (permissions.premium === false) {
     return;
@@ -414,6 +518,7 @@ document.getElementById("saveCSS").onclick = () => {
 };
 
 document.getElementById("saveUUID").onclick = () => {
+  log(`Trying license key`);
   if (hasLicense(document.getElementById("UUIDinput").value)) {
     settings.config.licenseKey = document.getElementById("UUIDinput").value;
     settings.save();
@@ -430,6 +535,7 @@ document.getElementById("saveUUID").onclick = () => {
 };
 
 document.getElementById("clearUUID").onclick = () => {
+  log(`Cleared license key`);
   if (
     confirm(
       "You can not undo this, are you sure you would like to clear your license key?"

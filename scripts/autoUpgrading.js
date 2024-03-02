@@ -109,6 +109,7 @@ UpgradingBlockCSS.innerHTML += `<style>
         padding-left: 70px;
         padding-right: 70px;
         border-radius: 35px;
+        overflow-x: hidden;
     }
     </style>`;
 document.body.appendChild(UpgradingBlockCSS);
