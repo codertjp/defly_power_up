@@ -7,18 +7,20 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   //   Find a run code depending on sent message
   if (request.message === "power") {
     if (settings.config.disable === true) {
-      on();
       settings.config.disable = false;
       settings.save();
       send("on");
+      packages = defaultPackages;
+      permsChange();
+      on();
     } else if (
       settings.config.disable === false ||
       settings.config.disable === undefined
     ) {
-      off();
       settings.config.disable = true;
       settings.save();
       send("off");
+      off();
     }
   } else if (request.message === "reset") {
     if (

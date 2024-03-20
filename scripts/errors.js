@@ -1,34 +1,28 @@
 // permissions
-function checkPermissions(type = "both", alert = true) {
+window.checkPermissions = (type = "both", alert = true) => {
   let output = { premium: true, signedIn: true };
-  let Licensed = hasLicense();
 
   if ((type === "signedIn" || type === "both") && stats.signedIn === "False") {
     output.signedIn = false;
-    if (alert && !Licensed) {
+    if (alert) {
       pageError("Please Sign-In First", "popup");
     }
   }
 
   if (type === "premium" && !settings.config.accountIsPrem) {
     output.premium = false;
-    if (alert && !Licensed) {
+    if (alert) {
       pageError("You Must Have Premium For This Feature", "popup");
     }
   }
 
   if (type === "both") {
-      output.premium = settings.config.accountIsPrem;
+    output.premium = settings.config.accountIsPrem;
     output.signedIn = !!(stats.signedIn === "True"); // Convert string to boolean
   }
 
-  if (Licensed) {
-    output.premium = true;
-    output.signedIn = true;
-  }
-
   return output;
-}
+};
 
 // Loading screen / error page
 // Inline CSS and HTML
@@ -82,24 +76,24 @@ var popupContainer = document.getElementById("popup-container");
 var closeBtn = document.getElementById("close-btn");
 
 // Function to show the popup
-function showPopup(text) {
+window.showPopup = (text) => {
   popupContainer.style.display = "block";
   popupContainer.childNodes[1].childNodes[1].innerHTML = text;
   setTimeout(hidePopup, 10000); // Auto-hide after 5 seconds
-}
+};
 
 // Function to hide the popup
-function hidePopup() {
+window.hidePopup = () => {
   popupContainer.style.display = "none";
-}
+};
 
 // Event listener for the close button
 closeBtn.addEventListener("click", hidePopup);
 
-function pageError(
+window.pageError = (
   text = "There has been an unknown error loading the page...",
   type = "screen"
-) {
+) => {
   log(`Page Error: ${text} Display as: ${type}`);
   if (type === "screen") {
     let loader = document.createElement("div");
@@ -163,4 +157,4 @@ function pageError(
   } else if (type === "popup") {
     showPopup(text);
   }
-}
+};

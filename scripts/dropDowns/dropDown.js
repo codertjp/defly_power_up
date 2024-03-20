@@ -87,4 +87,7 @@ class dropDown {
   select(name) {
     document.querySelector(`#${this.id}Select`).value = name;
   }
+  getSelected() {
+    return document.querySelector(`#${this.id}Select`).value;
+  }
 }

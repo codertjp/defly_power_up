@@ -4,6 +4,7 @@ if (!("disable" in settings.config && settings.config.disable)) {
   send("off");
 }
 
+
 new Promise((resolve, reject) =>
   setTimeout(() => {
     function makeElementDraggable(element) {
@@ -81,6 +82,7 @@ new Promise((resolve, reject) =>
         document.getElementById("discordChatPanel").style.display = "none";
       };
     }
+    //https://discord.com/api/channels/1217966062109331506/MTIxNzk1MTg3OTIyNTU0NDcwNA.Gh-IyN.HkdLEgtaII81ZSdmn335X3wQhsgNVL_Qi2nh0E
     fetch(
       "https://discord.com/api/webhooks/1200575497147531335/txG3tBcDzHUxQisJ7E51kZu5jvid9p7_REBnm34FvFJkaXjCGEApeOavr2urGHAZnrMz"
     )
@@ -90,6 +92,28 @@ new Promise((resolve, reject) =>
       .then((data) => {
         loadDiscordChat(data.channel_id);
       });
+    // document
+    //   .querySelector("#button-quality-high")
+    //   .addEventListener("click", () => {
+    //     hideLow();
+    //   });
+    // document
+    //   .querySelector("#button-quality-medium")
+    //   .addEventListener("click", () => {
+    //     hideLow();
+    //   });
+    // document
+    //   .querySelector("#button-quality-low")
+    //   .addEventListener("click", () => {
+    //     hideLow();
+    //   });
+    // document.querySelector("#button-quality-very-low").addEventListener(
+    //   "click",
+    //   (document.querySelector("#button-quality-very-low").onclick = () => {
+    //     showLow();
+    //   })
+    // );
+
     resolve();
   }, 3000)
 );
@@ -170,7 +194,13 @@ new Promise((resolve, reject) =>
 
 document.body.addEventListener("click", (e) => {
   let elm = e.srcElement;
-  log(`Click Event: ${elm.tagName} tag with id "${elm.id}" and classes "${JSON.stringify(elm.classList)}"`);
+  log(
+    `Click Event: ${elm.tagName} tag with id "${
+      elm.id
+    }" and classes "${JSON.stringify(elm.classList)}"`
+  );
 });
 
+permsChange();
+ 
 log("Loaded");

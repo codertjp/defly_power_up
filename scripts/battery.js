@@ -63,8 +63,6 @@ batteryPopup.load(
   document.body
 );
 
-
-
 if (settings.config.batteryChangeOnPower) {
   document.getElementById("batteryOptimize").setAttribute("disabled", "");
   document.getElementById("batteryOptimizeLabel").innerText =

@@ -1,3 +1,56 @@
+const urls = {
+  API: {
+    base: "https://codertjp.com.test/api",
+    user: (uuid) => urls.API.base + `/extension/${uuid}`,
+    fetchData: {
+      User: (uuid, callback) => {
+        fetch(urls.API.user(uuid))
+          .then((e) => e.json())
+          .then(callback);
+      },
+      Coins: (uuid, callback) => {
+        urls.API.fetchData.User(uuid, (e) => {
+          callback(e.data.coins);
+        });
+      },
+      Bans: (callback) => {
+        fetch(urls.API.base + `/bans/`)
+          .then((e) => e.json())
+          .then(callback);
+      },
+    },
+  },
+};
+
+class Cache {
+  constructor(id, type='string') {
+    this.id = id;
+    this.type = type;
+  }
+
+  save(data) {
+    if (this.type === 'object'){
+        localStorage.setItem(this.id, JSON.stringify(data));
+    }else{
+        localStorage.setItem(this.id, `${data}`);
+    }
+  }
+
+  get() {
+    const item = localStorage.getItem(this.id);
+    if (this.type === 'string'){
+        return item;
+    }else if (this.type === 'number'){
+        return parseInt(item);
+    }else if (this.type === 'float'){
+        return parseFloat(item);
+    }
+    else if (this.type === 'object'){
+        return JSON.parse(item);
+    }
+  }
+}
+
 async function wait(ms) {
   await new Promise((resolve, reject) =>
     setTimeout(() => {
@@ -18,18 +71,15 @@ function selectSuperPower(index) {
     .children[index].children[0].click();
 }
 
-// License key
-let Licenses =
-  "WyI0Y2Q4NDg5Ny1jYWQxLTQzYjctOTg1OS1iNDQ3ZDBmMmIyYTciLCJiMDhkMWJmNS1jNmRlLTQyYjAtOGI1My1kN2EwNDJmNDVmZDMiLCI3Y2IxOTkwNi05MzAxLTQ2MjYtOWYwZS02Y2U2ZDI4Y2U1NzMiLCI3M2MyMTcwYS0zN2I4LTRjNGYtOTIzNy02YzliMzFkMzQzNzMiXQ==";
-function hasLicense(key = settings.config.licenseKey) {
-  if (key !== "" && JSON.parse(decrypt(Licenses)).includes(key)) {
-    log(`Unlocked using License Key`);
-    return true;
-  } else if (key !== "") {
-    log(`Tried unlocking using License Key, But failed`);
-    alert("License Key Failed! This license key doesn't exist anymore.");
+function changeShowState(elm) {
+  if (elm.style.opacity === "0.5") {
+    elm.style.opacity = "";
+    elm.style.display = "none";
+  } else if (elm.style.display === "none") {
+    elm.style.display = "block";
+  } else {
+    elm.style.opacity = "0.5";
   }
-  return false;
 }
 
 // Locate child element with class name
@@ -46,7 +96,7 @@ function findIndexOfSelectedElement(parentElement, className) {
 }
 
 String.prototype.applyTo = function (ID = "", element = document.body) {
-  let temp = document.createElement("div");
+  const temp = document.createElement("div");
   if (ID !== "") {
     temp.id = ID;
   }
@@ -64,4 +114,16 @@ String.prototype.applyTo = function (ID = "", element = document.body) {
 `<div style="position: absolute; z-index: 10000; top: 50%; left: 50%; transform: translate(-50%, -50%); touch-action: none; pointer-events: none; display: none;">
 <img style="touch-action: none;" src="https://cdn.discordapp.com/attachments/1205581665519280269/1205643892851212318/hitBox.png?ex=65d91e5f&is=65c6a95f&hm=9f86adc34cba8284723e2e80c9691a0e3e97d264a97fc8a3279dc2150890776e&"/>
 </div>
-`.applyTo('HITBOX');
+`.applyTo("HITBOX");
+
+function countItems(arr, itemCount = {}) {
+  arr.forEach((item) => {
+    if (itemCount[item]) {
+      itemCount[item]++;
+    } else {
+      itemCount[item] = 1;
+    }
+  });
+
+  return itemCount;
+}

@@ -9,8 +9,8 @@ function accountIsPrem() {
       await wait(1000);
       settings.config.accountIsPrem =
         document.querySelector("#account-standard").style.display === "none";
-        await wait(1000);
-        // Close account settings
+      await wait(1000);
+      // Close account settings
       document.querySelector("#my-account > div.center > div > button").click();
       // Save to settings
       settings.save();
@@ -26,8 +26,8 @@ function accountIsPrem() {
 }
 // Turn on
 function on() {
+  let welcome = new popup("welcome", false);
   if (settings.config.thx) {
-    let welcome = new popup("welcome", false);
     welcome.load(
       `
           <h1>Thanks for downloading Defly.io chrome extension!</h1>
@@ -56,12 +56,22 @@ function on() {
     );
     settings.config.thx = false;
     settings.save();
+  } else if (
+    settings.config.version !== manifest.version &&
+    updateHTML !== ""
+  ) {
+    welcome.load(updateHTML, document.body);
+  } else if (settings.config.new !== "") {
+    welcome.load(settings.config.new, document.body);
+    settings.config.new = "";
+    settings.save();
   }
+  settings.config.version = manifest.version;
   accountIsPrem();
   addonHTMLadd();
   document.getElementById("alt2Span").style.display = "";
   document.querySelector("#choose-superpower > div").innerText =
-  settings.config.spText;
+    settings.config.spText;
   //   alts
   document.querySelector("#accounts").style.display = document.getElementById(
     "alt"
@@ -69,18 +79,16 @@ function on() {
     ? "block"
     : "none";
 
-  // --Custom CSS--
-  let customCSS = document.createElement("style");
-  customCSS.id = "customCSS";
-  customCSS.innerHTML += settings.config.css;
-  document.body.appendChild(customCSS);
-
   //   settings
   document.querySelector("#deflySettings").style.display = "";
 }
+
 // Turn off
 function off() {
-    document.querySelector("#choose-superpower > div").innerText = 'Select your superpower';
+  Object.keys(packages).forEach((v) => (packages[v] = false));
+  permsChange();
+  document.querySelector("#choose-superpower > div").innerText =
+    "Select your superpower";
   document.getElementById("alt2Span").style.display = "none";
   const elementsToRemove = document.querySelectorAll(".customBinding");
   elementsToRemove.forEach((element) => {
@@ -91,5 +99,19 @@ function off() {
   //   alts
   document.querySelector("#accounts").style.display = "none";
   // css
-  document.querySelector("#customCSS").remove();
+  if (document.getElementById("customCSS") !== null) {
+    document.getElementById("customCSS").remove();
+  }
 }
+
+perms.sub(() => {
+  if (document.getElementById("customCSS") !== null) {
+    document.getElementById("customCSS").remove();
+  }
+  if (packages.settings_css) {
+    let customCSS = document.createElement("style");
+    customCSS.id = "customCSS";
+    customCSS.innerHTML += settings.config.css;
+    document.body.appendChild(customCSS);
+  }
+});

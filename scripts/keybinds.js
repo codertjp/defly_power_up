@@ -5,6 +5,7 @@
 let activeElm = null,
   keyBindActions = {};
 document.addEventListener("keyup", (event) => {
+  if (!packages.settings_keybinds) return;
   if (
     !("code" in event) ||
     getComputedStyle(
@@ -98,7 +99,8 @@ class keyBind {
   }
 }
 
-function loadKeyBinds() {
+function loadKeyBindsToSettings() {
+  if (!packages.settings_keybinds) return;
   var elementsToRemove = document.querySelectorAll(".customBinding");
   elementsToRemove.forEach(function (element) {
     element.remove();
@@ -115,4 +117,6 @@ function loadKeyBinds() {
   }
 }
 
-loadKeyBinds();
+perms.sub(() => {
+  loadKeyBindsToSettings();
+});

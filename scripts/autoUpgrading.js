@@ -111,6 +111,23 @@ UpgradingBlockCSS.innerHTML += `<style>
         border-radius: 35px;
         overflow-x: hidden;
     }
+    #homepage-content > div.right-box > div {
+        max-height: 530px;
+        overflow-y: auto;
+        width: 80%;
+        height: 50%;
+        padding-left: 70px;
+        padding-right: 70px;
+        border-radius: 35px;
+        overflow-x: hidden;
+        background-color: rgba(0, 0, 0, .5);
+    }
+    #homepage-content > div.right-box > div {
+        max-width: ${
+          settings.config.accountIsPrem ? "160px" : "310px"
+        } !important;
+        ${settings.config.accountIsPrem ? "" : "padding: 0px !important;"}
+    }
     </style>`;
 document.body.appendChild(UpgradingBlockCSS);
 
@@ -119,6 +136,7 @@ let upgradingOrder = [];
 
 // Update upgradingOrder and change next cube color to orange
 function upgrade(event) {
+  if (!packages.settings_autoUpgrade) return;
   // Find what button fired this event
   let elm = event.srcElement;
   // Find the name of this upgrade ex: 'Player Speed'
@@ -171,6 +189,7 @@ function upgrade(event) {
 }
 // Remove one  upgradingOrder and change next cube color to orange
 function undo(event) {
+  if (!packages.settings_autoUpgrade) return;
   // Find what button fired this event
   let elm = event.srcElement;
   // verify, there is an upgrade to undo
@@ -319,6 +338,7 @@ for (var i = 0; i < undoElements.length; i++) {
 
 // Click on + button from index
 function level(index) {
+  if (!packages.settings_autoUpgrade) return;
   document
     .querySelector("#upgrade-block > div.main-block")
     .childNodes[(index + 1) * 2 - 1].childNodes[3].click();
@@ -327,6 +347,7 @@ function level(index) {
 // Auto upgrader
 let upgrading = true;
 async function upgrader() {
+  if (!packages.settings_autoUpgrade) return;
   while (upgrading) {
     await wait(200);
     if (

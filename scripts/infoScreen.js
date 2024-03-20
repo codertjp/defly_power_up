@@ -161,7 +161,11 @@ const menuItems = [
   },
   {
     name: "Skin ID",
-    link: " https://docs.google.com/spreadsheets/d/1RWiaX_GJjaO9f9FyA78wD-ETSEL3_7Kbmexg5xBQ-ZA/edit#gid=757313197",
+    link: "https://docs.google.com/spreadsheets/d/1RWiaX_GJjaO9f9FyA78wD-ETSEL3_7Kbmexg5xBQ-ZA/edit#gid=757313197",
+  },
+  {
+    name: "Elite Teams Roster",
+    link: "https://docs.google.com/spreadsheets/d/1b2z_lTIPEVhabnP73Mir3ttOZlqgEoLV9mLE1T-m1Y4/edit#gid=635670792",
   },
 ];
 

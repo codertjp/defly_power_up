@@ -20,6 +20,7 @@ function shiftCharacter(char, shift) {
 }
 
 // These are the text replacements so no one can get crafty and put a asci character
+
 const charMap = [
   ["ª", "@", "à", "á", "â", "ã", "ä", "å", "æ", "a"],
   ["¢", "ç", "c"],
@@ -1786,7 +1787,6 @@ function testForNSFW(
   text = text.toLowerCase();
   decryptList(words).forEach((word) => {
     if (text.includes(word)) {
-      console.log("YES", word);
       newText = replacement(text, word);
       isExplicit = true;
     }
@@ -1818,13 +1818,15 @@ document.querySelector("#play-button").addEventListener("click", () => {
     setInterval(() => {
       Array.from(document.querySelector("#gm-1v1-players").childNodes).forEach(
         (e) => {
-          console.log(testForNSFW(e.childNodes[0].innerText.strip()));
-          if (
-            testForNSFW(e.childNodes[0].innerText.strip())[2] &&
-            settings.config.screen1v1
-          ) {
-            ``;
-            e.style.display = "none";
+          try {
+            if (
+              testForNSFW(e.childNodes[0].innerText.strip())[2] &&
+              settings.config.screen1v1
+            ) {
+              e.style.display = "none";
+            }
+          } catch (e) {
+            null;
           }
         }
       );

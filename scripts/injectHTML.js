@@ -227,7 +227,6 @@ function addonHTMLadd() {
         settings.save();
       }
       if (element.getAttribute("data-action") !== null) {
-        console.log("ACTION", element.getAttribute("data-action"));
         element.addEventListener("click", (e) => {
           actions[e.srcElement.getAttribute("data-action")]();
         });

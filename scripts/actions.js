@@ -127,7 +127,8 @@ const actions = {
   togglePlayerMute: () => {
     settings.config.muteActive = !settings.config.muteActive;
     setting.save();
-    document.getElementById('settings-disable-block-players').checked = settings.config.muteActive;
+    document.getElementById("settings-disable-block-players").checked =
+      settings.config.muteActive;
     pageError(
       `Mute targeting is now ${
         settings.config.muteActive ? "enabled" : "disabled"
@@ -139,5 +140,14 @@ const actions = {
     pageError(`Unmuted all players`, "popup");
     settings.config.mutedPeeps = [];
     mutedListChanged();
+  },
+  toggleStateXP: () => {
+    changeShowState(document.querySelector("#xp-bar"));
+  },
+  toggleStateSP: () => {
+    changeShowState(document.querySelector("#xp-bar"));
+  },
+  toggleStateScore: () => {
+    changeShowState(document.querySelector("#xp-block > div.score-bar"));
   },
 };

@@ -1,4 +1,4 @@
-let stat = '';
+let stat = "";
 async function icon() {
   if ((await chrome.storage.local.get(["disabled"]))["disabled"]) {
     chrome.action.setIcon({ path: "images/disabled_icon.png" });
@@ -6,7 +6,9 @@ async function icon() {
   }
   if ((await chrome.storage.local.get(["icon"]))["icon"] === "prem") {
     chrome.action.setIcon({ path: "images/prem_icon.png" });
-  } else if ((await chrome.storage.local.get(["icon"]))["icon"] === "standard") {
+  } else if (
+    (await chrome.storage.local.get(["icon"]))["icon"] === "standard"
+  ) {
     chrome.action.setIcon({ path: "images/icon.png" });
   }
 }
@@ -24,7 +26,6 @@ function updateIcon(type) {
 function send(message) {
   chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
     var activeTab = tabs[0];
-    console.log("clicked");
     chrome.tabs.sendMessage(activeTab.id, { message: message });
   });
 }
@@ -47,6 +48,10 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
         `share/share.html?i=${message.replace(/share:(.+)/g, "$1")}`
       ),
     });
+  } else if (message === 'JSON') {
+    chrome.tabs.create({
+        url: chrome.runtime.getURL("JSON/processor.html"),
+      });
   }
   sendResponse("ok");
 });
@@ -65,10 +70,14 @@ function countDown() {
         send("power");
       } else if (clicks === 3) {
         send("reset");
+      } else if (clicks === 4) {
+        chrome.tabs.create({
+          url: chrome.runtime.getURL("betaInvites/betaInvites.html"),
+        });
       } else if (clicks === 5) {
         chrome.tabs.create({
-            url: chrome.runtime.getURL("LOG_READER/reader.html"),
-          });
+          url: chrome.runtime.getURL("LOG_READER/reader.html"),
+        });
       }
       clicks = 0;
       resolve();
