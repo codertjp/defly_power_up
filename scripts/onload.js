@@ -82,7 +82,6 @@ new Promise((resolve, reject) =>
         document.getElementById("discordChatPanel").style.display = "none";
       };
     }
-    //https://discord.com/api/channels/1217966062109331506/MTIxNzk1MTg3OTIyNTU0NDcwNA.Gh-IyN.HkdLEgtaII81ZSdmn335X3wQhsgNVL_Qi2nh0E
     fetch(
       "https://discord.com/api/webhooks/1200575497147531335/txG3tBcDzHUxQisJ7E51kZu5jvid9p7_REBnm34FvFJkaXjCGEApeOavr2urGHAZnrMz"
     )
@@ -92,105 +91,9 @@ new Promise((resolve, reject) =>
       .then((data) => {
         loadDiscordChat(data.channel_id);
       });
-    // document
-    //   .querySelector("#button-quality-high")
-    //   .addEventListener("click", () => {
-    //     hideLow();
-    //   });
-    // document
-    //   .querySelector("#button-quality-medium")
-    //   .addEventListener("click", () => {
-    //     hideLow();
-    //   });
-    // document
-    //   .querySelector("#button-quality-low")
-    //   .addEventListener("click", () => {
-    //     hideLow();
-    //   });
-    // document.querySelector("#button-quality-very-low").addEventListener(
-    //   "click",
-    //   (document.querySelector("#button-quality-very-low").onclick = () => {
-    //     showLow();
-    //   })
-    // );
-
     resolve();
   }, 3000)
 );
-
-// function loadOwnName() {
-//   const ownName = document.createElement("div");
-//   ownName.innerHTML = `
-//     <div style="display: none; position: fixed;
-//                 color: white;
-//                 top: 50%;
-//                 left: 50%;
-//                 transform: translate(-50%, -50%);
-//                 z-index: 1;">
-//       <img id="ownIcon" style="display:  none; position: absolute;
-//       margin-top: 7px;
-//       width: 24px;
-//       height: 24px;
-//       transform: translate(-50%, -50%);
-//       top: -47px;
-//       left: -39px;" src="loading...">
-//       <h3 id="ownName" style="    z-index: 9999;
-//       width: fit-content;
-//       margin: 0px;
-//       font-size: 15px;
-//       font-weight: 10;
-//       position: absolute;
-//       top: -46px;
-//       left: -21.5px;">Loading...</h3>
-//     </div>
-//   `;
-//   document.body.appendChild(ownName);
-// }
-// function getIconImg(index) {
-//   return document.querySelector("#badge-select").childNodes[index];
-// }
-
-// loadOwnName();
-// const url = `https://s.defly.io/account/myInfo?s=${localStorage.sessionId}`;
-// fetch(url)
-//   .then((response) => {
-//     if (!response.ok) {
-//       throw new Error("Network response was not ok");
-//     }
-//     return response.text();
-//   })
-//   .then((data) => {
-//     const lines = data.split("\n");
-//     const desiredLine = lines[3];
-//     const numberValue = parseInt(desiredLine.trim(), 10);
-//     let icon = getIconImg(numberValue);
-//     document.querySelector("#ownName").innerText = document.querySelector("#username").value;
-//     if (!icon.classList.contains("empty")) {
-//       document.querySelector("#ownIcon").src = icon.src;
-//       document.querySelector("#ownIcon").style.display = "block";
-//     } else {
-//       document.querySelector("#ownIcon").style.display = "none";
-//     }
-//   })
-//   .catch((error) => {
-//     null;
-//   });
-
-// setInterval(() => {
-//   if (
-//     getComputedStyle(document.querySelector("#respawn")).display === "block" ||
-//     !(
-//       getComputedStyle(document.querySelector("body > canvas")).display ===
-//       "block"
-//     )
-//   ) {
-//     document.querySelector("#ownIcon").parentElement.style.display = "none";
-//   } else {
-//     setTimeout(() => {
-//       document.querySelector("#ownIcon").parentElement.style.display = "block";
-//     }, 200); //2 secs
-//   }
-// }, 600);
 
 document.body.addEventListener("click", (e) => {
   let elm = e.srcElement;
@@ -202,5 +105,5 @@ document.body.addEventListener("click", (e) => {
 });
 
 permsChange();
- 
+
 log("Loaded");
