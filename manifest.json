@@ -1,0 +1,49 @@
+{
+  "name": "Defly Power Up+",
+  "version": "1.3.1",
+  "description": "Make Defly.io your own. Have tasks such as leveling up your copter and changing your name automated.",
+  "manifest_version": 3,
+  "icons": {
+    "128": "images/icon.png"
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://defly.io/*"],
+      "js": [
+        "scripts/init.js",
+        "scripts/errors.js",
+        "scripts/settings/getSettings.js",
+        "scripts/loadPackages.js",
+        "scripts/message.js",
+        "scripts/actions.js",
+        "scripts/crypt.js",
+        "scripts/NSFWtester.js",
+        "scripts/files.js",
+        "scripts/popup.js",
+        "scripts/dropDowns/dropDown.js",
+        "scripts/keybinds.js",
+        "scripts/infoScreen.js",
+        "scripts/battery.js",
+        "scripts/settings/loadSettings.js",
+        "scripts/dropDowns/altName.js",
+        "scripts/dropDowns/customTabs.js",
+        "scripts/autoUpgrading.js",
+        "scripts/ports.js",
+        "scripts/URL.js",
+        "scripts/power.js",
+        "scripts/skinTabs.js",
+        "scripts/deflyMonster.js",
+        "scripts/injectHTML.js",
+        "scripts/chatMute.js",
+        "scripts/onload.js"
+      ]
+    }
+  ],
+  "action": {
+    "default_title": "Defly Power Up+"
+  },
+  "permissions": ["storage"],
+  "background": {
+    "service_worker": "background.js"
+  }
+}
