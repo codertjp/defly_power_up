@@ -650,7 +650,8 @@ function loadExtendedSettings() {
               "License Key Failed! This license key is incorrect or doesn't exist anymore."
             );
           }
-        });
+        }
+      );
     };
 
     document.getElementById("clearUUID").onclick = () => {
@@ -674,7 +675,7 @@ perms.sub(() => {
 });
 
 perms.sub(() => {
-  document.getElementById(altNameDropDown.id).style.display = packages.altName
+  document.getElementById(altNameDropDown.id).style.display = packages.altName && settings.config.addAlts
     ? ""
     : "none";
   document.getElementById("alt2").style.display = packages.altName
