@@ -635,14 +635,11 @@ function loadExtendedSettings() {
   if (packages.settings_license_key) {
     document.getElementById("saveUUID").onclick = () => {
       log(`Trying license key`);
-      fetch(
-        `https://codertjp.com.test/api/user/${
-          document.getElementById("UUIDinput").value
-        }`
-      )
-        .then((e) => e.json())
-        .then((e) => {
-          if (e.data.exist) {
+      testURL(
+        urls.API.user(document.getElementById("UUIDinput").value),
+        async (response) => {
+          let e = await response.json();
+          if (response.status === 200) {
             settings.config.licenseKey =
               document.getElementById("UUIDinput").value;
             settings.save();
