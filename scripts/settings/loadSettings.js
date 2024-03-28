@@ -645,7 +645,7 @@ function loadExtendedSettings() {
             settings.save();
             alert(`Your account is now connected! Welcome back ${e.data.name}`);
             location.reload();
-          } else {
+          } else if (response.status === 404) {
             alert(
               "License Key Failed! This license key is incorrect or doesn't exist anymore."
             );
