@@ -120,7 +120,7 @@ function loadExtendedSettings() {
         <br />
         <br />
     </div>
-    <!--<button id="deflyMonsterImport" type="button" class="button" lang="en">Defly Monster Skin Import</button>-->
+    <button id="deflyMonsterImport" type="button" class="button" lang="en">Defly Monster Skin Import</button>
     <div ${packages.settings_advanced ? "" : 'style="display: none;"'}>
     <br />
     <br /
