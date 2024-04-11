@@ -92,6 +92,7 @@ const actions = {
   },
   stopAutoLeveling: () => {
     upgrading = false;
+    send("auto,false");
   },
   startAutoLeveling: () => {
     new Promise(async (resolve, reject) => {
@@ -99,6 +100,7 @@ const actions = {
         upgradingOrder = JSON.parse(
           document.getElementById("upgradesJSON").value
         );
+        send("auto,true");
       } catch {
         pageError(
           "Failed to load 'upgrades' from text box. Check if the JSON is entered is correct.",
@@ -149,5 +151,10 @@ const actions = {
   },
   toggleStateScore: () => {
     changeShowState(document.querySelector("#xp-block > div.score-bar"));
+  },
+  CLI: () => {
+    createCLI();
+    inCLI = true;
+    document.getElementById('CLIinput').focus();
   },
 };

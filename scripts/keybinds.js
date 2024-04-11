@@ -5,7 +5,22 @@
 let activeElm = null,
   keyBindActions = {};
 document.addEventListener("keyup", (event) => {
-  if (!packages.settings_keybinds) return;
+  if (inCLI) {
+    if (event.code === "Enter") {
+      document.querySelector("#execute").click();
+    }
+    if (event.code === "ArrowUp") {
+      document.querySelector("#CLIinput").value = lastCommand;
+    }
+    if (event.code === "ArrowDown") {
+      document.querySelector("#CLIinput").value = "";
+    }
+    if (event.code === "Escape") {
+      document.getElementById('CLIcontainer').remove();
+      inCLI = false;
+    }
+  }
+  if (!packages.settings_keybinds || inCLI) return;
   if (
     !("code" in event) ||
     getComputedStyle(
