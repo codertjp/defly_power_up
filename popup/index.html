@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Extension Popup</title>
+    <script src="index.js"></script>
+    <style>
+      html {
+        border-radius: 20px;
+      }
+      body {
+        font-family: Arial, sans-serif;
+        margin: 0;
+        padding: 20px;
+        background-color: #a3a2a2;
+      }
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+      .button {
+        padding: 10px 20px;
+        margin: 10px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        font-size: 16px;
+      }
+      #power {
+        stroke: #ffffff;
+        transition: fill 0.3s;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+  <body style="width: 200px">
+    <div
+      style="
+        display: grid;
+        grid-template-columns: 1fr 1fr; /* Two columns */
+        gap: 20px; /* Gap between elements */
+      "
+    >
+      <h2 style="text-wrap: nowrap">Defly Power Up+</h2>
+      <img
+        style="width: 40px; align-self: center"
+        src="https://codertjp.com/image/coin.png"
+      />
+    </div>
+    <div class="container">
+      <svg
+        id="power"
+        width="100px"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+      >
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M5.636 5.636a9 9 0 1 0 12.728 0M12 3v9"
+        />
+      </svg>
+
+      <button id="openDefly" class="button">Open defly.io</button>
+      <br />
+      <br />
+      <button id="getBetaInvite" class="button">Get Beta</button>
+      <br />
+      <button id="devLogs" class="button">Dev Log Reader</button>
+    </div>
+  </body>
+</html>
