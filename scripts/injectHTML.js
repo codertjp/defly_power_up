@@ -166,16 +166,11 @@ function addTemps() {
   addHTMLlisteners();
 }
 
-document.getElementById("openHTMLaddons").onclick = () => {
-  permissions = checkPermissions();
-  if (permissions.premium === false) {
-    return;
-  }
-  if (permissions.signedIn === false) {
-    return;
-  }
-  openHTMLaddons.show();
-};
+perms.sub(()=>{
+    document.getElementById("openHTMLaddons").onclick = () => {
+      openHTMLaddons.show();
+    };
+});
 
 document.getElementById("insertSave").onclick = (e) => {
   permissions = checkPermissions();

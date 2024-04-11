@@ -1,3 +1,5 @@
+let inCLI = false;
+
 Function.prototype.await = (...i) => {
   new Promise(async (n, t) => this(...i));
 };
@@ -24,24 +26,24 @@ const urls = {
       },
     },
     postAction: (uuid, action, callback) => {
-        fetch(`${urls.API.base}/extension/${uuid}/${action}`, {
-          method: "POST",
-          mode: "cors",
-        })
-          .then((e) => e.json())
-          .then(callback);
-      },
-      Coins: (uuid, callback) => {
-        urls.API.fetchData.User(uuid, (e) => {
-          callback(e.data.coins);
-        });
-      },
-      Bans: (callback) => {
-        fetch(urls.API.base + `/bans/`)
-          .then((e) => e.json())
-          .then(callback);
-      },
+      fetch(`${urls.API.base}/extension/${uuid}/${action}`, {
+        method: "POST",
+        mode: "cors",
+      })
+        .then((e) => e.json())
+        .then(callback);
     },
+    Coins: (uuid, callback) => {
+      urls.API.fetchData.User(uuid, (e) => {
+        callback(e.data.coins);
+      });
+    },
+    Bans: (callback) => {
+      fetch(urls.API.base + `/bans/`)
+        .then((e) => e.json())
+        .then(callback);
+    },
+  },
 };
 
 Function.prototype.await = function (...args) {
@@ -51,6 +53,66 @@ Function.prototype.await = function (...args) {
       .catch((error) => reject(error));
   });
 };
+
+class CommandPrefix {
+  constructor(prefix, types = {}, onFail = () => {}) {
+    this.prefix = prefix;
+    this.types = types;
+    this.onFail = onFail;
+    this.commands = [];
+  }
+  execute(string, executeCode = true) {
+    const cmdGroup = string.split(" ");
+    const base = cmdGroup.shift();
+    const prams = [...cmdGroup];
+    let command = "";
+    for (const cmd of this.commands) {
+      if (base === cmd.base) {
+        command = cmd;
+      }
+    }
+    if (command === "") {
+      return false;
+    }
+    console.log(cmdGroup);
+    if (cmdGroup.length === 0) {
+      command.callBack([]);
+      return true;
+    }
+    let i = 0;
+    if (command.prams.length > 0) {
+      for (const item of command.prams) {
+        if (!this.types[item](prams[0])) {
+          this.onFail(item, prams[0]);
+          return false;
+        }
+        prams.shift();
+        i++;
+      }
+    }
+    if (!executeCode) return true;
+    command.callBack(cmdGroup);
+    return true;
+  }
+  addCommand(base, prams, callBack) {
+    this.commands.push({ base: base, prams: prams, callBack: callBack });
+  }
+}
+
+function getProperty(path, object) {
+  // Remove surrounding brackets if present
+  path = path.replace(/^\[|\]$/g, "");
+  // Split path by brackets and quotes
+  const keys = path
+    .split(/(?:\]\[|\[|\])+?/)
+    .map((key) => key.replace(/['"]/g, ""));
+  let current = object;
+  for (const key of keys) {
+    if (current[key] === undefined) return undefined;
+    current = current[key];
+  }
+  return current;
+}
 
 function testURL(url, callback = () => {}, onError = () => {}) {
   (async (url, callback, onError) => {
@@ -80,13 +142,13 @@ class Cache {
   get() {
     const item = localStorage.getItem(this.id);
     if (this.type === "string") {
-      return item;
+      return item || '';
     } else if (this.type === "number") {
-      return parseInt(item);
+      return parseInt(item) || 0;
     } else if (this.type === "float") {
-      return parseFloat(item);
+      return parseFloat(item) || 0.0;
     } else if (this.type === "object") {
-      return JSON.parse(item);
+      return JSON.parse(item) || {};
     }
   }
 }

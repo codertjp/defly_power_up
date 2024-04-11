@@ -44,8 +44,12 @@ const perms = {
   },
 };
 
-function permsChange(force = false) {
-  if (!force && !("disable" in settings.config && settings.config.disable)) {
+function permsChange(force = false, evenDisabledForce = false) {
+  if (
+    !force &&
+    (!("disable" in settings.config && settings.config.disable) ||
+      evenDisabledForce)
+  ) {
     try {
       resetPerms();
     } catch (e) {
@@ -149,11 +153,10 @@ if (currentUserCache.get().permissions !== null) {
   permsChange(bannedCache.get() === "true");
 }
 
-
-function sendAction(action){
-    urls.API.postAction(settings.config.licenseKey, 'kill', (e)=>{
-        let user = e;
-        allowedPackagesUser = user.permissions;
-        permsChange();
-    });
+function sendAction(action) {
+  urls.API.postAction(settings.config.licenseKey, "kill", (e) => {
+    let user = e;
+    allowedPackagesUser = user.permissions;
+    permsChange();
+  });
 }
