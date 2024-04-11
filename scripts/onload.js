@@ -1,8 +1,8 @@
 if (!("disable" in settings.config && settings.config.disable)) {
   on();
-} else {
-  send("off");
 }
+
+send(settings.config.disable ? "off" : "on");
 
 new Promise((resolve, reject) =>
   setTimeout(() => {
