@@ -97,6 +97,11 @@ function loadExtendedSettings() {
         <br />
         <button id="openHTMLaddons" type="button" class="button" lang="en">Open HTML addons</button>
     </div>
+    <div ${packages.rules && false ? "" : 'style="display: none;"'}>
+        <br />
+        <br />
+        <button id="openRules" type="button" class="button" lang="en">Open Rules</button>
+    </div>
     <div ${packages.settings_battery ? "" : 'style="display: none;"'}>
         <br />
         <br />
@@ -560,7 +565,7 @@ function loadExtendedSettings() {
       action: document.getElementById("addKeybindDropdown").value,
       keys: ["", ""],
     };
-    loadKeyBinds();
+    loadKeyBindsToSettings();
   };
 
   document.getElementById("removeKeybindButton").onclick = () => {
@@ -571,19 +576,13 @@ function loadExtendedSettings() {
       document.getElementById("addKeybindDropdown").value
     ];
     settings.save();
-    loadKeyBinds();
+    loadKeyBindsToSettings();
   };
 
   document.getElementById("checkForPrem").onclick = () => {
     log(`Checking for premium`);
-    let Licensed = hasLicense();
-    if (!Licensed) {
-      permissions = checkPermissions("signedIn");
-      if (permissions.signedIn === false) {
-        return;
-      }
-    } else {
-      alert("You don't have premium. But you have a License.");
+    permissions = checkPermissions("signedIn");
+    if (permissions.signedIn === false) {
       return;
     }
     pageError("Checking If You Have Premium. Reloading Page Once Done.");
@@ -675,10 +674,9 @@ perms.sub(() => {
 });
 
 perms.sub(() => {
-  document.getElementById(altNameDropDown.id).style.display = packages.altName && settings.config.addAlts
-    ? ""
-    : "none";
-  document.getElementById("alt2").style.display = packages.altName
+  document.getElementById(altNameDropDown.id).style.display =
+    packages.altName && settings.config.addAlts ? "" : "none";
+  document.querySelector("#alt2Span").style.display = packages.altName
     ? ""
     : "none";
 });
