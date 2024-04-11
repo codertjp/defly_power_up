@@ -6,7 +6,7 @@ Function.prototype.await = (...i) => {
 
 const urls = {
   API: {
-    base: "https://codertjp.com.test/api",
+    base: "https://codertjp.com/api",
     user: (uuid) => urls.API.base + `/extension/${uuid}`,
     fetchData: {
       User: (uuid, callback) => {
