@@ -3,6 +3,7 @@
   "version": "1.3.1",
   "description": "Make Defly.io your own. Have tasks such as leveling up your copter and changing your name automated.",
   "manifest_version": 3,
+  "devtools_page": "dev_page/index.html",
   "icons": {
     "128": "images/icon.png"
   },
@@ -34,7 +35,9 @@
         "scripts/skinTabs.js",
         "scripts/deflyMonster.js",
         "scripts/injectHTML.js",
+        "scripts/rules.js",
         "scripts/chatMute.js",
+        "scripts/console.js",
         "scripts/onload.js"
       ]
     }
