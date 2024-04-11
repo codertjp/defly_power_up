@@ -31,6 +31,17 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
       localStorage.removeItem("config");
       location.reload();
     }
+  } else if (request.message === "powerPopup") {
+    send(settings.config.disable ? "on" : "off");
+    off();
+    settings.config.disable = !settings.config.disable;
+    settings.save();
+    if (settings.config.disable) {
+      Object.keys(packages).forEach((v) => (packages[v] = false));
+      permsChange(true, true);
+    } else {
+      permsChange();
+    }
   }
   // Acknowledge message
   sendResponse("ok");
