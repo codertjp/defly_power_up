@@ -103,23 +103,38 @@ const chatHistoryObserver = new MutationObserver(chatChanged);
 chatHistoryObserver.observe(chatHistory, config);
 const newChatObserver = new MutationObserver(chatChanged);
 newChatObserver.observe(newChat, config);
-
+let index = -1;
 function chatChanged(unusedLol) {
-  console.log();
   let allNewMessages = newChat.querySelectorAll("div");
   let allOldMessages = chatHistory.querySelectorAll("div");
   let allMessages = Array.from(allNewMessages).concat(
     Array.from(allOldMessages)
   );
+  const reverseMessages = allMessages.reverse();
+  let foundKill = false;
+  let posKills = [reverseMessages[0], reverseMessages[1]];
+  posKills.forEach((posKill) => {
+    if (foundKill) return;
 
-  let gotIndex = 0;
-  allMessages.forEach((message) => {
-    //TODO: use gotIndex to verify the death has not been read
-    if (message.classList.contains('info-dark') && !(message.classList.contains('read')) && message.innerHTML.includes('You killed')){
-        let gotPlayer = message.childNodes[1].innerText;
-        message.classList.add('read');
-        sendAction('kill');
+    if (
+      (posKill.classList.contains("info-dark") ||
+        posKill.classList.contains("info")) &&
+      !posKill.classList.contains("read") &&
+      posKill.innerHTML.includes("You killed")
+    ) {
+      let gotPlayer = posKill.childNodes[1].innerText;
+      let gotIndex = parseInt(
+        posKill.childNodes[2].innerText.replace(/\(kills: ([0-9]+)\)/g, "$1")
+      );
+      if (gotIndex > index) {
+        foundKill = true;
+        sendAction("kill");
+        index = gotIndex;
+      }
     }
+  });
+
+  allMessages.forEach((message) => {
     if (packages.chatMute) {
       if (message.classList.contains("info")) return;
       let messageContent = message.querySelectorAll("span");

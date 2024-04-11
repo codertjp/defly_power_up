@@ -31,25 +31,9 @@ const defaultPackages = {
   settings: true,
   openDiscord: true,
   monsterImport: false,
+  rules: true,
+  extensionCoins: true,
 };
-
-
-
-// fetch(urls.API.user('0f969926-4d92-49c6-8392-dd9cb1fa7fb')).then(response => {
-//     if (!response.ok) {
-//       throw new Error('HTTP error, status = ' + response.status);
-//     }
-//     return response.json();
-//   })
-//   .then(data => {
-//     // Handle successful response
-//     console.log('Data received:', data);
-//   })
-//   .catch(error => {
-//     // Handle errors, including 404
-//     console.error('Fetch error:', error);
-//   });
-
 
 let packages = defaultPackages;
 

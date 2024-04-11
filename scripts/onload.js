@@ -105,9 +105,15 @@ document.body.addEventListener("click", (e) => {
 
 document.querySelector(
   "#skin-popup > div.box"
-).innerHTML += `<div class="coins-owned" style="
+).innerHTML += `<div id="ExtensionCoins" class="coins-owned" style="
     top: 110px;
-"><img src="https://cdn.discordapp.com/attachments/1205581665519280269/1220393426353127565/coin.png?ex=660ec6f2&amp;is=65fc51f2&amp;hm=ca85a4dbfc4e2d5efcc07ccd93e0f86d2369524bdcadc42fddbc2e1a2abec2a2&amp;"> <span id="coins-owned-extension">0</span></div>`;
+"><img src="https://codertjp.com/image/coin.png"> <span id="coins-owned-extension">0</span></div>`;
+
+perms.sub(() => {
+  document.getElementById("ExtensionCoins").style.display = packages.extensionCoins
+    ? "block"
+    : "none";
+});
 
 permsChange();
 
