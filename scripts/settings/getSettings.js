@@ -19,6 +19,15 @@ let configTemp = {
   linkList: true,
   screen1v1: true,
   chatBlocking: true,
+  rules: [
+    {
+      name: "Play FFA",
+      trigger: "play",
+      condition: "type -IS- 0",
+      actionMode: "log",
+      action: "Hello World",
+    },
+  ],
   version: 0,
   mutedPeeps: [],
   muteActive: true,
@@ -98,6 +107,5 @@ let prams = {
 updateHTML = updateHTML.replaceAll(/{{(.+)}}/gi, function (word, key) {
   return prams[key];
 });
-
 
 settings.save();
