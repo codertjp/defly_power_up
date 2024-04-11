@@ -40,7 +40,8 @@
     }
   ],
   "action": {
-    "default_title": "Defly Power Up+"
+    "default_title": "Defly Power Up+",
+    "default_popup": "popup/index.html"
   },
   "permissions": ["storage"],
   "background": {
