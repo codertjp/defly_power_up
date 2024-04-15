@@ -14,32 +14,49 @@ const operations = {
   },
 };
 
-function getValue(string, prams) {
-  const regx = string.match(/(NUMBER|STRING|BOOL|PRAM)\(([A-z0-9]+)\)/);
-  if (regx === null) {
-    return false;
+function getValue(string, prams, returnFalseIfNotFound = true) {
+  const regxTypes =
+    /(NUMBER|STRING|BOOL|PRAM|WINDOW|WINDOW_FUNCTION)\(([A-z0-9\.]+)\)/;
+  while (string.match(regxTypes) !== null) {
+    const regx = string.match(regxTypes);
+    if (regx === null) {
+      string = string.replace(regxTypes, false);
+    }
+    if (regx[1] === "NUMBER") {
+      string = string.replace(regxTypes, parseFloat(regx[2]));
+    }
+    if (regx[1] === "STRING") {
+      string = string.replace(regxTypes, `${regx[2]}`);
+    }
+    if (regx[1] === "BOOL") {
+      string = string.replace(regxTypes, regx[2] === "true");
+    }
+    if (regx[1] === "PRAM") {
+      string = string.replace(regxTypes, prams[regx[2]]);
+    }
+    if (regx[1] === "WINDOW") {
+      string = string.replace(regxTypes, str(getValueByPath(regx[2], window)));
+    }
+    if (regx[1] === "WINDOW_FUNCTION") {
+      getValueByPath(regx[2], window)();
+      string = string.replace(regxTypes, "");
+    }
+    break;
   }
-  if (regx[1] === "NUMBER") {
-    return parseFloat(regx[2]);
-  }
-  if (regx[1] === "STRING") {
-    return `${regx[2]}`;
-  }
-  if (regx[1] === "BOOL") {
-    return regx[2] === 'true';
-  }
-  if (regx[1] === "PRAM") {
-    return prams[regx[2]];
-  }
+  return string;
 }
 
+
 function basicOperation(string, prams) {
-  const regx = string.match(/([A-z0-9\(\)]+)-([A-Z_]+)-([A-z0-9\(\)]+)/);
+  const regx = string.match(/([^-)]+[\)]{0,})-([A-Z_]+)-([^-)]+[\)]{0,})/);
   if (regx === null) {
     return false;
   }
   const operation = operations[regx[2]];
-  return [operation(getValue(regx[1], prams), getValue(regx[3], prams)), `${getValue(regx[1], prams)}-${regx[2]}-${getValue(regx[3], prams)}`];
+  return [
+    operation(getValue(regx[1], prams), getValue(regx[3], prams)),
+    `${getValue(regx[1], prams)}-${regx[2]}-${getValue(regx[3], prams)}`,
+  ];
 }
 
 // console.log(basicOperation("PRAM(num1)-IS-PRAM(num2)", {

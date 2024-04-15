@@ -71,6 +71,7 @@ function createCLI() {
   let inputField = document.createElement("input");
   inputField.id = "CLIinput";
   inputField.type = "text";
+  inputField.autocomplete = "false";
   inputField.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
   inputField.style.color = "#FFFFFF"; // White color for text
   inputField.style.border = "none";
@@ -98,7 +99,7 @@ function createCLI() {
     if (command !== "") {
       lastCommand = command;
       if (!executeCommand(command)) {
-        consoleLog(`-  Unknown command "${command.split(" ")[0]}"`, "red");
+        consoleLog(`-  Unknown command or error running "${command.split(" ")[0]}"`, "red");
       }
       inputField.value = ""; // Clear input field after executing command
     }
@@ -134,11 +135,17 @@ function executeCommand(command) {
   return CLI.execute(`/${command}`, true);
 }
 
-CLI.addCommand("/test", ["ConditionCode", "JSON"], (e) => {
+
+CLI.addCommand("/testCode", ["ConditionCode", "JSON"], (e) => {
   consoleLog(`-  Verified "${e[0]}"`, "#25ccab");
   const command = basicOperation(e[0], JSON.parse(e[1]));
   consoleLog(`-  Converted: ${command[1]}`, "blue");
   consoleLog(`-  Output: ${command[0]}`, "yellow");
+});
+
+CLI.addCommand("/test", ["Any", "JSON"], (e) => {
+  const command = getValue(e[0], JSON.parse(e[1]), false);
+  consoleLog(`-  Output: ${command}`, "yellow");
 });
 
 CLI.addCommand("/config.edit", ["Any", "Any", "Bool"], (e) => {
@@ -171,9 +178,8 @@ CLI.addCommand("/config.remove", ["Any"], (e) => {
 CLI.addCommand("/user", ["Any"], (e) => {
   consoleLog(`-  Finding server...`, "#25ccab");
   urls.API.fetchData.User(settings.config.licenseKey, (userData) => {
-    console.log(e);
     if (e.length > 0) {
-      consoleLog(`-  You Have ${userData.data[e[0]]} ${e[0]}`, "yellow");
+      consoleLog(`-  You Have ${getValueByPath(e[0], userData.data)} ${e[0]}`, "yellow");
     } else {
       consoleLog(`-  User Data ${JSON.stringify(userData.data)}`, "yellow");
     }
