@@ -46,6 +46,29 @@ const urls = {
   },
 };
 
+function getValueByPath(pathString, obj) {
+    // Split the path string into an array of keys
+    const keys = pathString.split('.');
+
+    // Initialize a reference to the current object
+    let currentObj = obj;
+
+    // Loop through each key in the path
+    for (const key of keys) {
+        // Check if the current key exists in the object
+        if (currentObj.hasOwnProperty(key)) {
+            // Update the current object to the value of the current key
+            currentObj = currentObj[key];
+        } else {
+            // If the key doesn't exist, return undefined
+            return undefined;
+        }
+    }
+
+    // Return the value found at the end of the path
+    return currentObj;
+}
+
 Function.prototype.await = function (...args) {
   return new Promise((resolve, reject) => {
     this(...args)
@@ -53,6 +76,23 @@ Function.prototype.await = function (...args) {
       .catch((error) => reject(error));
   });
 };
+
+function str (inp = undefined) {
+    switch (typeof inp) {
+      case "number":
+        return inp.toString() || "";
+      case "boolean":
+        return inp.toString();
+      case "string":
+        return inp;
+      case "object":
+        console.log(inp);
+        const json = inp
+        return JSON.stringify(json);
+      default:
+        return "UNABLE TO CHANGE TO STRING";
+    }
+  };
 
 class CommandPrefix {
   constructor(prefix, types = {}, onFail = () => {}) {
@@ -74,7 +114,6 @@ class CommandPrefix {
     if (command === "") {
       return false;
     }
-    console.log(cmdGroup);
     if (cmdGroup.length === 0) {
       command.callBack([]);
       return true;
