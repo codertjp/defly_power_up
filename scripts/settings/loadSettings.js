@@ -682,7 +682,7 @@ perms.sub(() => {
 });
 
 perms.sub(() => {
-  if (!packages.menuList) {
+  if (packages.menuList) {
     if (document.getElementById("hidingMenuList") !== null) {
       document.getElementById("hidingMenuList").remove();
     }
