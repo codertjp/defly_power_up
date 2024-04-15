@@ -32,6 +32,7 @@ let varActions = {
     });
   },
   setVar: (name, value, elm) => {
+    value = parseInt(value);
     if (!(name in settings.config.vars)) {
       settings.config.vars[name] = { value: "", elms: [] };
     }
@@ -49,6 +50,7 @@ let varActions = {
     varActions.reload(name);
   },
   change: (name, value, elm) => {
+    value = parseInt(value);
     if (!(name in settings.config.vars)) {
       settings.config.vars[name] = { value: 0, elms: [] };
     }
@@ -79,6 +81,20 @@ let varActions = {
       settings.save();
     }
     varActions.reload(name);
+  },
+  fetch: (name, value, elm) => {
+    fetch(value)
+      .then((e) => e.json())
+      .then((data) => {
+        const gotData = getValueByPath(elm.getAttribute("data-var-path"), data);
+        settings.config.vars[name].value = gotData;
+        setCSS(`--${name}`, gotData);
+        varActions.reload(name);
+      }).catch(()=>{
+        settings.config.vars[name].value = 'Could Not Find URl';
+        setCSS(`--${name}`, 'Could Not Find URl');
+        varActions.reload(name);
+      });
   },
 };
 
@@ -166,13 +182,14 @@ function addTemps() {
   addHTMLlisteners();
 }
 
-perms.sub(()=>{
-    document.getElementById("openHTMLaddons").onclick = () => {
-      openHTMLaddons.show();
-    };
+perms.sub(() => {
+  document.getElementById("openHTMLaddons").onclick = () => {
+    openHTMLaddons.show();
+  };
 });
 
 document.getElementById("insertSave").onclick = (e) => {
+  e.preventDefault();
   permissions = checkPermissions();
   if (permissions.premium === false) {
     return;
@@ -180,7 +197,6 @@ document.getElementById("insertSave").onclick = (e) => {
   if (permissions.signedIn === false) {
     return;
   }
-  e.preventDefault();
   settings.config.htmlAddons.push({
     name: document.getElementById("insertName").value,
     selector: document.getElementById("insertSelector").value,
@@ -198,7 +214,7 @@ function addonHTMLadd() {
   let temp;
   while (i < settings.config.htmlAddons.length) {
     temp = document.createElement("div");
-    temp.innerHTML = settings.config.htmlAddons[i].html;
+    temp.innerHTML = getValue(settings.config.htmlAddons[i].html, {});
     document
       .querySelector(settings.config.htmlAddons[i].selector)
       .appendChild(temp);
@@ -234,11 +250,17 @@ function addonHTMLadd() {
             .forEach((item) => {
               varActions[e.srcElement.getAttribute("data-var-action")](
                 item,
-                parseInt(element.getAttribute("data-var-value")),
+                element.getAttribute("data-var-value"),
                 e.srcElement
               );
             });
         });
+        if (
+          element.getAttribute("data-var-run") !== null &&
+          element.getAttribute("data-var-run") === "now"
+        ) {
+          element.click();
+        }
       }
       if (element.getAttribute("data-var-set") !== null) {
         if (element.tagName === "INPUT" || element.tagName === "TEXTAREA") {
@@ -328,6 +350,7 @@ function addonHTMLremove() {
 function addHTMLlisteners() {
   document.querySelectorAll(".insertSaveEdit").forEach((elm) => {
     elm.onclick = (e) => {
+      e.preventDefault();
       permissions = checkPermissions();
       if (permissions.premium === false) {
         return;
@@ -335,7 +358,6 @@ function addHTMLlisteners() {
       if (permissions.signedIn === false) {
         return;
       }
-      e.preventDefault();
       let index = e.srcElement.parentElement.parentElement.id,
         name = e.srcElement.parentElement.childNodes[4].value,
         selector = e.srcElement.parentElement.childNodes[10].value,
