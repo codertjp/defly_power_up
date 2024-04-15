@@ -20,13 +20,13 @@ let configTemp = {
   screen1v1: true,
   chatBlocking: true,
   rules: [
-    {
-      name: "Play FFA",
-      trigger: "play",
-      condition: "type -IS- 0",
-      actionMode: "log",
-      action: "Hello World",
-    },
+    // {
+    //   name: "Play FFA",
+    //   trigger: "play",
+    //   condition: "type-IS-0",
+    //   actionMode: "log",
+    //   action: "Hello World",
+    // },
   ],
   version: 0,
   mutedPeeps: [],
