@@ -102,12 +102,14 @@ document.body.addEventListener("click", (e) => {
     }" and classes "${JSON.stringify(elm.classList)}"`
   );
 });
+coinsDiv = document.createElement('div');
+coinsDiv.innerHTML = `<div id="ExtensionCoins" class="coins-owned" style="
+top: 110px;
+"><img src="https://codertjp.com/image/coin.png"> <span id="coins-owned-extension">0</span></div>`;
 
 document.querySelector(
   "#skin-popup > div.box"
-).innerHTML += `<div id="ExtensionCoins" class="coins-owned" style="
-    top: 110px;
-"><img src="https://codertjp.com/image/coin.png"> <span id="coins-owned-extension">0</span></div>`;
+).appendChild(coinsDiv);
 
 perms.sub(() => {
   document.getElementById("ExtensionCoins").style.display = packages.extensionCoins
