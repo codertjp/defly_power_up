@@ -1,3 +1,5 @@
+versions.nsfwTester = '1.0.0';
+
 function encryptList(list, shift = 3) {
   return list.map((item) => shiftString(item, shift));
 }

@@ -1,14 +1,17 @@
-let battery = {
-    charging: false,
-    chargingTime: Infinity,
-    dischargingTime: Infinity,
-    level: 0,
-    onchargingchange: null,
-    onchargingtimechange: null,
-    ondischargingtimechange: null,
-    onlevelchange: null,
-  },
-  old = false;
+versions.CLI = '1.0.0';
+
+battery = {
+  charging: false,
+  chargingTime: Infinity,
+  dischargingTime: Infinity,
+  level: 0,
+  onchargingchange: null,
+  onchargingtimechange: null,
+  ondischargingtimechange: null,
+  onlevelchange: null,
+};
+
+old = false;
 
 function getBattery() {
   navigator.getBattery().then((e) => {
