@@ -146,3 +146,5 @@ perms.sub(() => {
 permsChange();
 
 log("Loaded");
+
+console.extension("Started");
