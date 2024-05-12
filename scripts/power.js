@@ -69,10 +69,12 @@ function on() {
   settings.config.version = manifest.version;
   accountIsPrem();
   addonHTMLadd();
+  changeBetaMode();
+  //   alts
+ console.log(document.getElementById("alt2Span"));
   document.getElementById("alt2Span").style.display = "";
   document.querySelector("#choose-superpower > div").innerText =
     settings.config.spText;
-  //   alts
   document.querySelector("#accounts").style.display = document.getElementById(
     "alt"
   ).checked
@@ -104,14 +106,51 @@ function off() {
   }
 }
 
+function changeBetaMode() {
+  if (settings.config.disable) {
+    if (
+      document.querySelector(
+        "#homepage-content > div.middle-box > div > div.logo > img"
+      ).src === `${urls.API.base.replace("/api", "")}/image/defly_preveiw.png`
+    ) {
+      document.querySelector(
+        "#homepage-content > div.middle-box > div > div.logo > img"
+      ).src = "https://defly.io/img/logo2.png";
+    }
+    document.getElementById('versionDpupCon') !== null ? document.getElementById('versionDpupCon').remove() : null;
+    return;
+  }
+  if (manifest.version_name) {
+    document.querySelector(
+      "#homepage-content > div.middle-box > div > div.logo > img"
+    ).src = `${urls.API.base.replace("/api", "")}/image/defly_preveiw.png`;
+    `
+        <div id="versionDpup" style="
+            color: white;
+            position: absolute;
+            bottom: 70px;
+            right: 10px;
+        ">
+            <img src="https://codertjp.com/image/coin.png" style="
+                height: 20px;
+                width: 20px;
+                vertical-align: middle;
+            ">
+            - ${manifest.version_name}
+        </div>
+        `.applyTo('versionDpupCon');
+  }
+}
+
 perms.sub(() => {
-  if (document.getElementById("customCSS") !== null) {
-    document.getElementById("customCSS").remove();
-  }
-  if (packages.settings_css) {
-    let customCSS = document.createElement("style");
-    customCSS.id = "customCSS";
-    customCSS.innerHTML += settings.config.css;
-    document.body.appendChild(customCSS);
-  }
+  changeBetaMode();
+//   if (document.getElementById("customCSS") !== null) {
+//     document.getElementById("customCSS").remove();
+//   }
+//   if (packages.settings_css) {
+//     let customCSS = document.createElement("style");
+//     customCSS.id = "customCSS";
+//     customCSS.innerHTML += settings.config.css;
+//     document.body.appendChild(customCSS);
+//   }
 });

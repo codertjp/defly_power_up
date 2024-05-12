@@ -46,19 +46,26 @@ function log(text) {
   var yyyy = date.getFullYear();
 
   today = mm + "/" + dd + "/" + yyyy;
-  localStorage.setItem(
-    "logs",
-    localStorage.getItem("logs") === null
-      ? ""
-      : localStorage.getItem("logs") +
-          `${cryptWithKey(
-            today +
-            ">" +
-            date.toLocaleTimeString() +
-            ">" + text,
-            "DEVLOGS"
-          )}\n`
-  );
+  try {
+    localStorage.setItem(
+      "logs",
+      localStorage.getItem("logs") === null
+        ? ""
+        : localStorage.getItem("logs") +
+            `${cryptWithKey(
+              today + ">" + date.toLocaleTimeString() + ">" + text,
+              "DEVLOGS"
+            )}\n`
+    );
+  } catch (e) {
+    localStorage.setItem(
+      "logs",
+      `${cryptWithKey(
+        today + ">" + date.toLocaleTimeString() + ">" + text,
+        "DEVLOGS"
+      )}\n`
+    );
+  }
 }
 
 function unLog(text) {
