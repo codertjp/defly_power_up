@@ -1,3 +1,13 @@
+console.extension("Starting...");
+
+versions = {};
+
+manifest = chrome.runtime.getManifest();
+versions.extension = manifest.version;
+if (manifest.version_name) {
+  versions.extensionVerName = manifest.version_name;
+}
+
 let inCLI = false;
 
 Function.prototype.await = (...i) => {
@@ -46,27 +56,98 @@ const urls = {
   },
 };
 
-function getValueByPath(pathString, obj) {
-    // Split the path string into an array of keys
-    const keys = pathString.split('.');
+class Cache {
+  constructor(id, type = "string") {
+    this.id = id;
+    this.type = type;
+  }
 
-    // Initialize a reference to the current object
-    let currentObj = obj;
-
-    // Loop through each key in the path
-    for (const key of keys) {
-        // Check if the current key exists in the object
-        if (currentObj.hasOwnProperty(key)) {
-            // Update the current object to the value of the current key
-            currentObj = currentObj[key];
-        } else {
-            // If the key doesn't exist, return undefined
-            return undefined;
-        }
+  save(data) {
+    if (this.type === "object") {
+      localStorage.setItem(this.id, JSON.stringify(data));
+    } else {
+      localStorage.setItem(this.id, `${data}`);
     }
+  }
 
-    // Return the value found at the end of the path
-    return currentObj;
+  get() {
+    const item = localStorage.getItem(this.id);
+    if (this.type === "string") {
+      return item || "";
+    }
+    if (this.type === "number") {
+      return parseInt(item) || 0;
+    }
+    if (this.type === "float") {
+      return parseFloat(item) || 0.0;
+    }
+    if (this.type === "object") {
+      return JSON.parse(item) || {};
+    }
+  }
+}
+
+let ratioCallbackStack = [],
+  remove = null,
+  oldPR = window.devicePixelRatio,
+  initPR = new Cache("initPR", "number");
+
+const updatePixelRatio = () => {
+  if (remove != null) {
+    remove();
+  }
+  const mqString = `(resolution: ${window.devicePixelRatio}dppx)`;
+  const media = matchMedia(mqString);
+  media.addEventListener("change", () => {
+    updatePixelRatio();
+  });
+  remove = () => {
+    media.removeEventListener("change", updatePixelRatio);
+  };
+  ratioCallbackStack.forEach((c) => {
+    c(oldPR / window.devicePixelRatio);
+  });
+  oldPR = window.devicePixelRatio;
+};
+updatePixelRatio();
+
+function calibratePR() {
+  if (`${window.devicePixelRatio}`.length === 1) {
+    initPR.save(window.devicePixelRatio);
+    return true;
+  }
+  return false;
+}
+
+function sizeImmutable(elm) {
+  ratioCallbackStack.push((pr) => {
+    elm.style.width = parseFloat(elm.style.width.replace("px", "")) * pr + "px";
+    elm.style.height =
+      parseFloat(elm.style.height.replace("px", "")) * pr + "px";
+  });
+}
+
+function getValueByPath(pathString, obj) {
+  // Split the path string into an array of keys
+  const keys = pathString.split(".");
+
+  // Initialize a reference to the current object
+  let currentObj = obj;
+
+  // Loop through each key in the path
+  for (const key of keys) {
+    // Check if the current key exists in the object
+    if (currentObj.hasOwnProperty(key)) {
+      // Update the current object to the value of the current key
+      currentObj = currentObj[key];
+    } else {
+      // If the key doesn't exist, return undefined
+      return undefined;
+    }
+  }
+
+  // Return the value found at the end of the path
+  return currentObj;
 }
 
 Function.prototype.await = function (...args) {
@@ -77,22 +158,21 @@ Function.prototype.await = function (...args) {
   });
 };
 
-function str (inp = undefined) {
-    switch (typeof inp) {
-      case "number":
-        return inp.toString() || "";
-      case "boolean":
-        return inp.toString();
-      case "string":
-        return inp;
-      case "object":
-        console.log(inp);
-        const json = inp
-        return JSON.stringify(json);
-      default:
-        return "UNABLE TO CHANGE TO STRING";
-    }
-  };
+function str(inp = undefined) {
+  switch (typeof inp) {
+    case "number":
+      return inp.toString() || "";
+    case "boolean":
+      return inp.toString();
+    case "string":
+      return inp;
+    case "object":
+      const json = inp;
+      return JSON.stringify(json);
+    default:
+      return "UNABLE TO CHANGE TO STRING";
+  }
+}
 
 class CommandPrefix {
   constructor(prefix, types = {}, onFail = () => {}) {
@@ -164,34 +244,6 @@ function testURL(url, callback = () => {}, onError = () => {}) {
   }).await(url, callback, onError);
 }
 
-class Cache {
-  constructor(id, type = "string") {
-    this.id = id;
-    this.type = type;
-  }
-
-  save(data) {
-    if (this.type === "object") {
-      localStorage.setItem(this.id, JSON.stringify(data));
-    } else {
-      localStorage.setItem(this.id, `${data}`);
-    }
-  }
-
-  get() {
-    const item = localStorage.getItem(this.id);
-    if (this.type === "string") {
-      return item || '';
-    } else if (this.type === "number") {
-      return parseInt(item) || 0;
-    } else if (this.type === "float") {
-      return parseFloat(item) || 0.0;
-    } else if (this.type === "object") {
-      return JSON.parse(item) || {};
-    }
-  }
-}
-
 async function wait(ms) {
   await new Promise((resolve, reject) =>
     setTimeout(() => {
@@ -245,17 +297,7 @@ String.prototype.applyTo = function (ID = "", element = document.body) {
   element.appendChild(temp);
 };
 
-// `<div style="position: absolute; z-index: 10000; top: 50%; left: 50%; transform: translate(-50%, -50%);">
-// <svg width="64" height="64" xmlns="http://www.w3.org/2000/svg">
-//   <circle cx="32" cy="32" r="30" fill="none" stroke="red" stroke-width="4" />
-// </svg>
-// </div>
-// `.applyTo();
 
-`<div style="position: absolute; z-index: 10000; top: 50%; left: 50%; transform: translate(-50%, -50%); touch-action: none; pointer-events: none; display: none;">
-<img style="touch-action: none;" src="https://cdn.discordapp.com/attachments/1205581665519280269/1205643892851212318/hitBox.png?ex=65d91e5f&is=65c6a95f&hm=9f86adc34cba8284723e2e80c9691a0e3e97d264a97fc8a3279dc2150890776e&"/>
-</div>
-`.applyTo("HITBOX");
 
 function countItems(arr, itemCount = {}) {
   arr.forEach((item) => {

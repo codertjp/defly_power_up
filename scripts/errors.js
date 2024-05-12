@@ -76,9 +76,10 @@ var popupContainer = document.getElementById("popup-container");
 var closeBtn = document.getElementById("close-btn");
 
 // Function to show the popup
-window.showPopup = (text) => {
+window.showPopup = (text, hides = true) => {
   popupContainer.style.display = "block";
   popupContainer.childNodes[1].childNodes[1].innerHTML = text;
+  if (!hides) return;
   setTimeout(hidePopup, 10000); // Auto-hide after 5 seconds
 };
 
@@ -92,14 +93,14 @@ closeBtn.addEventListener("click", hidePopup);
 
 window.pageError = (
   text = "There has been an unknown error loading the page...",
-  type = "screen"
+  type = "screen",
+  hides = true,
 ) => {
   log(`Page Error: ${text} Display as: ${type}`);
   if (type === "screen") {
     let loader = document.createElement("div");
     loader.innerHTML = `
     <style>
-
             .loading-screen {
                 display: flex;
                 backdrop-filter: blur(33px);
@@ -155,6 +156,6 @@ window.pageError = (
   } else if (type === "alert") {
     alert(`Error: ${text}`);
   } else if (type === "popup") {
-    showPopup(text);
+    showPopup(text, hides);
   }
 };

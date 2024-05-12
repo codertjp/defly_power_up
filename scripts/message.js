@@ -28,7 +28,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         "Are you sure you want to reset all settings (note: this is only for this chrome extension not for defly.io. Also know this requires a page refresh.)"
       )
     ) {
-      localStorage.removeItem("config");
+      settings.save({});
       location.reload();
     }
   } else if (request.message === "powerPopup") {
