@@ -1,4 +1,4 @@
-const actions = {
+actions = {
   closeServer: () => {
     document.querySelector("#preferred-server-block > span.close").click();
   },
@@ -152,9 +152,17 @@ const actions = {
   toggleStateScore: () => {
     changeShowState(document.querySelector("#xp-block > div.score-bar"));
   },
+  hitBoxes: () => {
+    testPR();
+    try {
+    document.getElementById("HITBOX").style.display === "none"
+      ? (document.getElementById("HITBOX").style.display = "block")
+      : (document.getElementById("HITBOX").style.display = "none");
+    } catch {null;}
+  },
   CLI: () => {
     createCLI();
     inCLI = true;
-    document.getElementById('CLIinput').focus();
+    document.getElementById("CLIinput").focus();
   },
 };

@@ -98,8 +98,22 @@ function createCLI() {
     let command = inputField.value.trim();
     if (command !== "") {
       lastCommand = command;
-      if (!executeCommand(command)) {
-        consoleLog(`-  Unknown command or error running "${command.split(" ")[0]}"`, "red");
+      let dpupExe = DPUP.Execute.Mixed(command);
+      commandTranslated = dpupExe[0];
+      if (
+        !executeCommand(commandTranslated, command) &&
+        command[0] !== ">" &&
+        command[1] !== ">"
+      ) {
+        consoleLog(
+          `-  Unknown command or error running "${
+            commandTranslated.split(" ")[0]
+          }"`,
+          "red"
+        );
+      } else if (command[0] === ">" && command[1] === ">") {
+        consoleLog(`-  Ran DPUP code`, "lightgreen");
+        consoleLog(`-  Output: ${dpupExe[0]}`, "yellow");
       }
       inputField.value = ""; // Clear input field after executing command
     }
@@ -129,12 +143,13 @@ function createCLI() {
 
 let lastCommand = "";
 // Function to execute a command
-function executeCommand(command) {
+function executeCommand(command, override = null) {
   // Display command in the command history
-  consoleLog(command, "#0d802b");
+  if (override) {
+    consoleLog(override, "#0d802b");
+  }
   return CLI.execute(`/${command}`, true);
 }
-
 
 CLI.addCommand("/testCode", ["ConditionCode", "JSON"], (e) => {
   consoleLog(`-  Verified "${e[0]}"`, "#25ccab");
@@ -179,7 +194,10 @@ CLI.addCommand("/user", ["Any"], (e) => {
   consoleLog(`-  Finding server...`, "#25ccab");
   urls.API.fetchData.User(settings.config.licenseKey, (userData) => {
     if (e.length > 0) {
-      consoleLog(`-  You Have ${getValueByPath(e[0], userData.data)} ${e[0]}`, "yellow");
+      consoleLog(
+        `-  You Have ${getValueByPath(e[0], userData.data)} ${e[0]}`,
+        "yellow"
+      );
     } else {
       consoleLog(`-  User Data ${JSON.stringify(userData.data)}`, "yellow");
     }
@@ -198,3 +216,47 @@ CLI.addCommand("/exit", [], (e) => {
   document.getElementById("CLIcontainer").remove();
   inCLI = false;
 });
+
+CLI.addCommand("/versions", [], (e) => {
+  for (const property in versions) {
+    consoleLog(`-  ${property}: -${versions[property]}`, "#7b2280");
+  }
+});
+
+CLI.addCommand("/reset", ["Any"], (e) => {
+    const resets = {
+        zoomCalibration() {
+            document.querySelector("#resetZoomCal").click();
+        },
+        packages() {
+            permsChange();
+        },
+        injectHTML() {
+            addonHTMLremove();
+            addonHTMLadd();
+        },
+        keybinds() {
+            loadKeyBindsToSettings();
+        },
+    };
+    if (e[0] in resets){
+        resets[e[0]]();
+        consoleLog(`-  Reset done! Page refresh needed`, "yellow");
+    } else {
+        consoleLog(`-  We don't have a reset by that name`, "red");
+    }
+});
+
+// CLI.addCommand("/dpup", ["Any", "Any"], (e) => {
+//   consoleLog(`-  Running snippet`, "#2f5370");
+//   try {
+//     let out = DPUP.Execute.Stacks(e[0]);
+//     if (e[1] === 'true'){
+//         consoleLog(`-  Ran script output: ${JSON.stringify(out)}`);
+//     } else {
+//         consoleLog(`-  Ran script`);
+//     }
+// }catch(e){
+//       consoleLog(`-  Error running script: ${e}`);
+//   }
+// });
