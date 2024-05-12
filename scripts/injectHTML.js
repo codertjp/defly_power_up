@@ -1,3 +1,5 @@
+versions.injectHTML = '1.1.0';
+
 let styleRules = document.createElement("div");
 styleRules.innerHTML = `
 <style>
@@ -236,6 +238,15 @@ function addonHTMLadd() {
             varActions.reload(item);
           });
         settings.save();
+      }
+      if (element.getAttribute("data-size") !== null) {
+        switch (key) {
+            case immutable:
+                sizeImmutable(element);
+                break;
+            default:
+                break;
+        } element.getAttribute("data-size")
       }
       if (element.getAttribute("data-action") !== null) {
         element.addEventListener("click", (e) => {

@@ -9,6 +9,7 @@ const defaultPackages = {
   altName: false,
   chatMute: false,
   eliteSkinHighlight: false,
+  hitBox: true,
   menuList: false,
   screen1v1: false,
   screenChat: false,
@@ -35,7 +36,7 @@ const defaultPackages = {
   extensionCoins: true,
 };
 
-let packages = defaultPackages;
+packages = defaultPackages;
 
 const perms = {
   events: [],

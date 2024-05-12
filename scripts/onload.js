@@ -107,14 +107,40 @@ coinsDiv.innerHTML = `<div id="ExtensionCoins" class="coins-owned" style="
 top: 110px;
 "><img src="https://codertjp.com/image/coin.png"> <span id="coins-owned-extension">0</span></div>`;
 
-document.querySelector(
-  "#skin-popup > div.box"
-).appendChild(coinsDiv);
+document.querySelector("#skin-popup > div.box").appendChild(coinsDiv);
+
+console.extension('ERROR 404 not found');
+console.extension('WARN test failed');
+
+function testPR() {
+  if (localStorage.getItem("initPR") === null) {
+    pageError(
+      `
+        Action required: Zoom +/- to 100% then calibrate by clicking <b id="calibrateExtension">Here</b>. <a href="#">Learn More</a>
+    `,
+      "popup",
+      false
+    );
+
+    document.querySelector("#calibrateExtension").onclick = () => {
+      if (calibratePR()) {
+        console.log("Changed to", window.devicePixelRatio);
+        pageError(
+          `Calibrated! You may now use Immutable Zoom, Hitboxes, ect.`,
+          "popup"
+        );
+        loadHitboxes();
+      } else {
+        alert("You must zoom out/in to 100%");
+      }
+    };
+  }
+}
+testPR();
 
 perms.sub(() => {
-  document.getElementById("ExtensionCoins").style.display = packages.extensionCoins
-    ? "block"
-    : "none";
+  document.getElementById("ExtensionCoins").style.display =
+    packages.extensionCoins ? "block" : "none";
 });
 
 permsChange();
