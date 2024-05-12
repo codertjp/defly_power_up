@@ -1,4 +1,5 @@
 let stat = "";
+
 async function icon() {
   if ((await chrome.storage.local.get(["disabled"]))["disabled"]) {
     chrome.action.setIcon({ path: "images/disabled_icon.png" });
@@ -21,6 +22,7 @@ function updateIcon(type) {
     resolve();
   });
 }
+
 
 // out
 function send(message) {

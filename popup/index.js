@@ -17,12 +17,20 @@ setTimeout(async () => {
     window.open(chrome.runtime.getURL("./openDefly/defly.html"));
   };
 
+  document.getElementById("openCodertjp").onclick = () => {
+    window.open(chrome.runtime.getURL("./openCodertjp/codertjp.html"));
+  };
+
   document.getElementById("getBetaInvite").onclick = () => {
     window.open(chrome.runtime.getURL("./betaInvites/betaInvites.html"));
   };
 
   document.getElementById("devLogs").onclick = () => {
     window.open(chrome.runtime.getURL("./LOG_READER/reader.html"));
+  };
+
+  document.getElementById("reset").onclick = () => {
+    send('reset');
   };
 
   async function setPowerColor() {
