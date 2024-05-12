@@ -15,24 +15,25 @@ if (params.save !== null) {
 
 // Connecting though https://codertjp.com
 if (params.connect !== null) {
-    log(`Trying license key`);
-    testURL(
-      urls.API.user(params.connect),
-      async (response) => {
-        let e = await response.json();
-        if (response.status === 200) {
-          settings.config.licenseKey =
-            params.connect;
-          settings.save();
-          alert(`Your account is now connected! Welcome back ${e.data.name}`);
-          location.replace('/');
-        } else if (response.status === 404) {
-          alert(
-            "License Key Failed! This license key is incorrect or doesn't exist anymore."
-          );
-        }
-      }
-    );
+  log(`Trying license key`);
+  testURL(urls.API.user(params.connect), async (response) => {
+    let e = await response.json();
+    if (response.status === 200) {
+      settings.config.licenseKey = params.connect;
+      settings.save();
+      currentUserCache.save(e.data);
+      alert(`Your account is now connected! Welcome back ${e.data.name}`);
+      location.replace("/");
+    } else if (response.status === 404) {
+      alert(
+        "License Key Failed! This license key is incorrect or doesn't exist anymore."
+      );
+    } else {
+      alert(
+        "A unknown error occurred, if this continues contact the owner of CoderTJP.com, @pinecone_67541"
+      );
+    }
+  });
 }
 
 // Auto load skin
