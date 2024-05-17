@@ -109,9 +109,6 @@ top: 110px;
 
 document.querySelector("#skin-popup > div.box").appendChild(coinsDiv);
 
-console.extension('ERROR 404 not found');
-console.extension('WARN test failed');
-
 function testPR() {
   if (localStorage.getItem("initPR") === null) {
     pageError(

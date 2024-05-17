@@ -1,7 +1,6 @@
 {
   "name": "Defly Power Up+",
   "version": "1.5.0",
-  "version_name": "1.5.0 beta",
   "description": "Make Defly.io your own. Have tasks such as leveling up your copter and changing your name automated.",
   "manifest_version": 3,
   "icons": {
@@ -16,6 +15,8 @@
         "scripts/errors.js",
         "scripts/settings/getSettings.js",
         "scripts/DPUP/interpreter.js",
+        "scripts/events.js",
+        "scripts/createEvents.js",
         "scripts/loadPackages.js",
         "scripts/features.js",
         "scripts/features/beta.js",

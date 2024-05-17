@@ -43,3 +43,9 @@ new Feature(
   // Is Permission:
   false
 );
+
+document.querySelector("#play-button").addEventListener("click", () => {
+  document.getElementById("versionDpupCon") !== null
+    ? document.getElementById("versionDpupCon").remove()
+    : null;
+});

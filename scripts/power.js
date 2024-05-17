@@ -71,7 +71,6 @@ function on() {
   addonHTMLadd();
   changeBetaMode();
   //   alts
- console.log(document.getElementById("alt2Span"));
   document.getElementById("alt2Span").style.display = "";
   document.querySelector("#choose-superpower > div").innerText =
     settings.config.spText;
@@ -143,7 +142,7 @@ function changeBetaMode() {
 }
 
 perms.sub(() => {
-  changeBetaMode();
+//   changeBetaMode(); 
 //   if (document.getElementById("customCSS") !== null) {
 //     document.getElementById("customCSS").remove();
 //   }

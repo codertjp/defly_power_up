@@ -116,7 +116,7 @@ UpgradingBlockCSS.innerHTML += `<style>
         overflow-y: auto;
         width: 80%;
         height: 50%;
-        padding-left: 70px;
+        padding-left: 70px;x
         padding-right: 70px;
         border-radius: 35px;
         overflow-x: hidden;
@@ -127,6 +127,9 @@ UpgradingBlockCSS.innerHTML += `<style>
           settings.config.accountIsPrem ? "160px" : "310px"
         } !important;
         ${settings.config.accountIsPrem ? "" : "padding: 0px !important;"}
+    }
+    body.dark-theme #HITBOX #hitboxLine {
+        filter: invert(0) !important;
     }
     </style>`;
 document.body.appendChild(UpgradingBlockCSS);
