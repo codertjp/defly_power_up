@@ -1,8 +1,8 @@
 let updateHTML = `
 <h2>Welcome to: {{version}} of the extension!</h2>
-<h3>This update brings support to codertjp.com</h3>
-<br />
 <h3>Release notes:</h3>
+<li>Bug fixes!</li>
+<br />
 `;
 
 function mergeObjects(obj1, obj2) {

@@ -112,11 +112,11 @@ const updatePixelRatio = () => {
 updatePixelRatio();
 
 function calibratePR() {
-  if (`${window.devicePixelRatio}`.length === 1) {
+//   if (`${window.devicePixelRatio}`.length === 1) {
     initPR.save(window.devicePixelRatio);
     return true;
-  }
-  return false;
+//   }
+//   return false;
 }
 
 function sizeImmutable(elm) {

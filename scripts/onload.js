@@ -113,7 +113,7 @@ function testPR() {
   if (localStorage.getItem("initPR") === null) {
     pageError(
       `
-        Action required: Zoom +/- to 100% then calibrate by clicking <b id="calibrateExtension">Here</b>. <a href="#">Learn More</a>
+        Action required: Zoom +/- to 100% then calibrate by clicking <b id="calibrateExtension">Here</b>. <a href="https://codertjp.com/about?about=zoom-calibrate">Learn More</a>
     `,
       "popup",
       false
@@ -121,14 +121,13 @@ function testPR() {
 
     document.querySelector("#calibrateExtension").onclick = () => {
       if (calibratePR()) {
-        console.log("Changed to", window.devicePixelRatio);
         pageError(
           `Calibrated! You may now use Immutable Zoom, Hitboxes, ect.`,
           "popup"
         );
         loadHitboxes();
       } else {
-        alert("You must zoom out/in to 100%");
+        alert("Error calibrating... contact support");
       }
     };
   }
