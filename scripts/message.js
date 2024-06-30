@@ -25,7 +25,7 @@ chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
   } else if (request.message === "reset") {
     if (
       confirm(
-        "Are you sure you want to reset all settings (note: this is only for this chrome extension not for defly.io. Also know this requires a page refresh.)"
+        "Are you sure you want to reset all settings for this Chrome extension? Please be aware this will not impact defly.io settings and will necessitate a page refresh."
       )
     ) {
       settings.save({});

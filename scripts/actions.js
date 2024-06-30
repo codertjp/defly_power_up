@@ -155,10 +155,24 @@ actions = {
   hitBoxes: () => {
     testPR();
     try {
-    document.getElementById("HITBOX").style.display === "none"
-      ? (document.getElementById("HITBOX").style.display = "block")
-      : (document.getElementById("HITBOX").style.display = "none");
-    } catch {null;}
+      document.getElementById("HITBOX").style.display === "none"
+        ? (document.getElementById("HITBOX").style.display = "block")
+        : (document.getElementById("HITBOX").style.display = "none");
+    } catch {
+      null;
+    }
+  },
+  hitBoxesLine: () => {
+    testPR();
+    changeShowState(document.querySelector("#hitboxLine"));
+  },
+  hitBoxesWall: () => {
+    testPR();
+    changeShowState(document.querySelector("#hitboxLine"));
+  },
+  hitBoxesBullet: () => {
+    testPR();
+    changeShowState(document.querySelector("#hitboxLine"));
   },
   CLI: () => {
     createCLI();
