@@ -92,11 +92,11 @@ if (
         e.data.forEach((item) => {
           let name = item.name,
             userName = inputUserName;
-          if (item.ignoreCase) {
+          if (item.ignore_case) {
             name = name.toLowerCase();
             userName = userName.toLowerCase();
           }
-          if (item.ignoreFont) {
+          if (item.ignore_font) {
             name = name.strip();
             userName = userName.strip();
           }
@@ -108,20 +108,24 @@ if (
           }
         });
         if (!banned[0]) {
-          user = userData.data;
-          allowedPackagesUser = user.permissions;
-          permsChange();
-          currentUserCache.save(user);
+          if (userData) {
+            user = userData.data;
+            allowedPackagesUser = user.permissions;
+            permsChange();
+            currentUserCache.save(user);
+          }
         } else {
           if (banned[1].type === "warn") {
             pageError(
               `The name you have enter is being warned. (This message will continue to show up until a admin removes it)`,
               "popup"
             );
-            user = userData.data;
-            allowedPackagesUser = user.permissions;
-            permsChange();
-            currentUserCache.save(user);
+            if (userData) {
+              user = userData.data;
+              allowedPackagesUser = user.permissions;
+              permsChange();
+              currentUserCache.save(user);
+            }
             return;
           }
           allowedPackagesUser = [];
@@ -144,6 +148,49 @@ if (
   }
 
   getUserPerms();
+} else {
+  urls.API.fetchData.Bans((e) => {
+    let inputUserName = document.querySelector("#username").value,
+      banned = [false, []];
+    e.data.forEach((item) => {
+      let name = item.name,
+        userName = inputUserName;
+      if (item.ignore_case) {
+        name = name.toLowerCase();
+        userName = userName.toLowerCase();
+      }
+      if (item.ignore_font) {
+        name = name.strip();
+        userName = userName.strip();
+      }
+      if (name !== userName) {
+        return;
+      }
+      banned = [true, item];
+      Object.keys(packages).forEach((v) => (packages[v] = false));
+      permsChange(true);
+    });
+
+    if (banned[1].type === "warn") {
+      pageError(
+        `The name you have enter is being warned. (This message will continue to show up until a admin removes it)`,
+        "popup"
+      );
+      return;
+    }
+    allowedPackagesUser = [];
+    if (banned[1].type === "no_load") {
+      currentUserCache.save({
+        name: "BANNED_USER",
+        coins: 0,
+        permissions: [],
+        role: "disabled",
+      });
+    } else if (banned[1].type === "perm_ban") {
+      bannedCache.save("true");
+    }
+    permsChange();
+  });
 }
 
 if (currentUserCache.get().permissions !== null) {
