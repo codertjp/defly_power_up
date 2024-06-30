@@ -52,6 +52,16 @@ document.querySelector("#settings-popup").appendChild(deflySettings);
           settings.config.linkList ? "checked" : ""
         }>
         <label for="linkList">Show Links on homepage </label>
+        <br />
+        <br />
+        <svg style="width: 15px; height: 15px;" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z" />
+        </svg>
+        <div class="name">Only enable if you have read the terms of <br /> <a href="/tos.html" target="_blank">terms of service</a> & <a href="/privacypolicy.html" target="_blank">privacy policy</a> and have signed in before</div>
+        <input type="checkbox" id="noSignInCheckbox" name="noSignInCheckbox" ${
+          settings.config.noSignInCheckbox ? "checked" : ""
+        }>
+          <label for="noSignInCheckbox">Disable the forced check box on sign-in</label>
     </div>
     <div ${packages.settings_verify_prem ? "" : 'style="display: none;"'}>
         <br />

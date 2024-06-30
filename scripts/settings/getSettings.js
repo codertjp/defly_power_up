@@ -30,6 +30,7 @@ const configTemp = {
     //   action: "Hello World",
     // },
   ],
+  noSignInCheckbox: false,
   version: 0,
   mutedPeeps: [],
   muteActive: true,

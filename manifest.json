@@ -23,6 +23,7 @@
         "scripts/features/customCSS.js",
         "scripts/features/eliteSkinHighlight.js",
         "scripts/features/hitbox.js",
+        "scripts/features/noSignInCheckbox.js",
         "scripts/message.js",
         "scripts/actions.js",
         "scripts/crypt.js",

@@ -34,6 +34,7 @@ const defaultPackages = {
   monsterImport: false,
   rules: true,
   extensionCoins: true,
+  noSignInCheckbox: true,
 };
 
 packages = defaultPackages;
