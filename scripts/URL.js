@@ -15,7 +15,6 @@ if (params.save !== null) {
 
 // Connecting though https://codertjp.com
 if (params.connect !== null) {
-  log(`Trying license key`);
   testURL(urls.API.user(params.connect), async (response) => {
     let e = await response.json();
     if (response.status === 200) {
@@ -50,7 +49,6 @@ if (
   // settings skin dropdown has a value
   settings.config.activeSkinName !== ""
 ) {
-  log(`Auto Loading Skin`);
   // then click "Try skin button"
   document.querySelector("#skin-editor").style.display = "none";
   pageError("Loading custom skin");

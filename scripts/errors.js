@@ -96,7 +96,6 @@ window.pageError = (
   type = "screen",
   hides = true,
 ) => {
-  log(`Page Error: ${text} Display as: ${type}`);
   if (type === "screen") {
     let loader = document.createElement("div");
     loader.innerHTML = `

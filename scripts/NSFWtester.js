@@ -1793,9 +1793,6 @@ function testForNSFW(
       isExplicit = true;
     }
   });
-  if (isExplicit) {
-    log(`NSFW Test: Found Word In: ${text}`);
-  }
   return [newText, text, isExplicit];
   // const regex = new RegExp(`${decryptList(words).join("|")}`, "g");
   // const isExplicit = text.match(regex) !== null;
@@ -1810,12 +1807,6 @@ function testForNSFW(
 // console.log(encryptList((() => {let item = decryptList(words);item.push("WORD");return item;})()));
 
 document.querySelector("#play-button").addEventListener("click", () => {
-  log(
-    `Play in game mode: ${findIndexOfSelectedElement(
-      document.querySelector("#homepage-loaded > div.game-modes"),
-      "selected"
-    )}`
-  );
   if (document.querySelector("#gamemode-4").classList.contains("selected")) {
     setInterval(() => {
       Array.from(document.querySelector("#gm-1v1-players").childNodes).forEach(

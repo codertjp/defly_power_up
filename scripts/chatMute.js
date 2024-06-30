@@ -173,7 +173,6 @@ function chatChanged(unusedLol) {
 }
 
 function addPlayerAsMuted(name) {
-  log(`Muted: ${name}`);
   pageError(`Muted: ${name}`, "popup");
   if (!settings.config.mutedPeeps.includes(name)) {
     settings.config.mutedPeeps.push(name);

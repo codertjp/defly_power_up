@@ -39,43 +39,6 @@ function uncryptWithKey(string, key) {
   return output;
 }
 
-function log(text) {
-  var date = new Date();
-  var dd = String(date.getDate()).padStart(2, "0");
-  var mm = String(date.getMonth() + 1).padStart(2, "0"); //January is 0!
-  var yyyy = date.getFullYear();
-
-  today = mm + "/" + dd + "/" + yyyy;
-  try {
-    localStorage.setItem(
-      "logs",
-      localStorage.getItem("logs") === null
-        ? ""
-        : localStorage.getItem("logs") +
-            `${cryptWithKey(
-              today + ">" + date.toLocaleTimeString() + ">" + text,
-              "DEVLOGS"
-            )}\n`
-    );
-  } catch (e) {
-    localStorage.setItem(
-      "logs",
-      `${cryptWithKey(
-        today + ">" + date.toLocaleTimeString() + ">" + text,
-        "DEVLOGS"
-      )}\n`
-    );
-  }
-}
-
-function unLog(text) {
-  let output = "";
-  text.split("\n").forEach((item) => {
-    output += `${uncryptWithKey(item, "DEVLOGS")}\n`;
-  });
-  return output;
-}
-
 function clearLogs() {
   localStorage.removeItem("logs");
 }

@@ -12,7 +12,6 @@ try {
     port.innerHTML = `<div style="text-align: center;"><input id="port" placeholder="Port" /><br/><button id="enterPort">Open port</button></div>`;
     document.querySelector("#server-menu").appendChild(port);
     document.querySelector("#enterPort").onclick = () => {
-      log(`Loading Port: ${document.querySelector("#port").value}`);
       location.replace(
         `#${findIndexOfSelectedElement(
           document.querySelector("#homepage-loaded > div.game-modes"),

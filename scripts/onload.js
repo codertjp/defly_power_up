@@ -94,14 +94,30 @@ new Promise((resolve, reject) =>
   }, 3000)
 );
 
-document.body.addEventListener("click", (e) => {
-  let elm = e.srcElement;
-  log(
-    `Click Event: ${elm.tagName} tag with id "${
-      elm.id
-    }" and classes "${JSON.stringify(elm.classList)}"`
-  );
-});
+const news = new popup("news");
+
+// document.querySelector(
+//   "#homepage-content > div.left-box > div > div:nth-child(3)"
+// ).innerHTML =
+//   `<button id="deflypowerupnews" class="button" style="
+//     height: 33px;
+//     width: 170px;
+//     font-size: 13px;
+// ">Defly Power Up+ News</button>
+// ` +
+//   document.querySelector(
+//     "#homepage-content > div.left-box > div > div:nth-child(3)"
+//   ).innerHTML;
+
+// document.getElementById("deflypowerupnews").onclick = () => {
+//   fetch(urls.API.base + "/announcement")
+//     .then((e) => e.json())
+//     .then((e) => {
+//       news.load(DPUP.Execute.Mixed(e.data)[0], document.body);
+//       news.show();
+//     });
+// };
+
 coinsDiv = document.createElement("div");
 coinsDiv.innerHTML = `<div id="ExtensionCoins" class="coins-owned" style="
 top: 110px;
@@ -140,7 +156,5 @@ perms.sub(() => {
 });
 
 permsChange();
-
-log("Loaded");
 
 console.extension("Started");
