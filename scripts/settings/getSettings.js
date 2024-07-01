@@ -117,6 +117,8 @@ updateHTML = updateHTML.replaceAll(/{{(.+)}}/gi, function (word, key) {
   return prams[key];
 });
 
+localStorage.removeItem('logs');
+
 class Setting {
   constructor(id, defaultValue = "", autoSet = true) {
     this.id = id;
